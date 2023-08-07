@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuGiOh", "YuGiOh\YuGiOh.csproj", "{53EFA072-DDB9-46F3-B6BB-B753F7D8547F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53EFA072-DDB9-46F3-B6BB-B753F7D8547F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53EFA072-DDB9-46F3-B6BB-B753F7D8547F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53EFA072-DDB9-46F3-B6BB-B753F7D8547F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53EFA072-DDB9-46F3-B6BB-B753F7D8547F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F149A2BC-3DE5-4989-8A92-872D40276CA5}
+	EndGlobalSection
+EndGlobal
