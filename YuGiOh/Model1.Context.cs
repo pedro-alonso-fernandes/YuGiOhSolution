@@ -27,5 +27,14 @@ namespace YuGiOh
     
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<LogAcesso> LogAcessoes { get; set; }
+        public virtual DbSet<Atributo> Atributoes { get; set; }
+        public virtual DbSet<Carta> Cartas { get; set; }
+        public virtual DbSet<CrtArmadilha> CrtArmadilhas { get; set; }
+        public virtual DbSet<CrtMagia> CrtMagias { get; set; }
+        public virtual DbSet<CrtMonstro> CrtMonstroes { get; set; }
+        public virtual DbSet<EfPendulo> EfPenduloes { get; set; }
+        public virtual DbSet<Icone> Icones { get; set; }
+        public virtual DbSet<MnstEfeito> MnstEfeitoes { get; set; }
+        public virtual DbSet<Tipo> Tipoes { get; set; }
     }
 }
