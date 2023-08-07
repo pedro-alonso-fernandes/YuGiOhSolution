@@ -5,6 +5,64 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="YuGiOhDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Atributo">
+          <Key>
+            <PropertyRef Name="IdAtributo" />
+          </Key>
+          <Property Name="IdAtributo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Carta">
+          <Key>
+            <PropertyRef Name="IdCarta" />
+          </Key>
+          <Property Name="IdCarta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Nivel" Type="int" />
+          <Property Name="Numero" Type="int" Nullable="false" />
+          <Property Name="PtnAtaque" Type="int" />
+          <Property Name="PtnDefesa" Type="int" />
+          <Property Name="Descricao" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="AtributoId" Type="int" />
+          <Property Name="IconeId" Type="int" />
+          <Property Name="TipoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CrtArmadilha">
+          <Key>
+            <PropertyRef Name="IdArmadilha" />
+          </Key>
+          <Property Name="IdArmadilha" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CrtMagia">
+          <Key>
+            <PropertyRef Name="IdMagia" />
+          </Key>
+          <Property Name="IdMagia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CrtMonstro">
+          <Key>
+            <PropertyRef Name="IdMonstro" />
+          </Key>
+          <Property Name="IdMonstro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="EfeitoId" Type="int" />
+        </EntityType>
+        <EntityType Name="EfPendulo">
+          <Key>
+            <PropertyRef Name="IdPendulo" />
+          </Key>
+          <Property Name="IdPendulo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Icone">
+          <Key>
+            <PropertyRef Name="IdIcone" />
+          </Key>
+          <Property Name="IdIcone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
         <EntityType Name="LogAcesso">
           <Key>
             <PropertyRef Name="IdLog" />
@@ -13,6 +71,24 @@
           <Property Name="UsuarioId" Type="int" Nullable="false" />
           <Property Name="UltimoAcesso" Type="datetime" Nullable="false" />
           <Property Name="TempoAcesso" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="MnstEfeito">
+          <Key>
+            <PropertyRef Name="IdEfeito" />
+          </Key>
+          <Property Name="IdEfeito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PenduloId" Type="int" />
+        </EntityType>
+        <EntityType Name="Tipo">
+          <Key>
+            <PropertyRef Name="IdTipo" />
+          </Key>
+          <Property Name="IdTipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MonstroId" Type="int" />
+          <Property Name="ArmadilhaId" Type="int" />
+          <Property Name="MagiaId" Type="int" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -25,6 +101,54 @@
           <Property Name="Senha" Type="varchar" MaxLength="256" Nullable="false" />
           <Property Name="UltimoAcesso" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Carta_Atributo">
+          <End Role="Atributo" Type="Self.Atributo" Multiplicity="0..1" />
+          <End Role="Carta" Type="Self.Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Atributo">
+              <PropertyRef Name="IdAtributo" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="AtributoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_Icone">
+          <End Role="Icone" Type="Self.Icone" Multiplicity="0..1" />
+          <End Role="Carta" Type="Self.Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Icone">
+              <PropertyRef Name="IdIcone" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="IconeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_Tipo">
+          <End Role="Tipo" Type="Self.Tipo" Multiplicity="1" />
+          <End Role="Carta" Type="Self.Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo">
+              <PropertyRef Name="IdTipo" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="TipoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CrtMonstro_MnstEfeito">
+          <End Role="MnstEfeito" Type="Self.MnstEfeito" Multiplicity="0..1" />
+          <End Role="CrtMonstro" Type="Self.CrtMonstro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MnstEfeito">
+              <PropertyRef Name="IdEfeito" />
+            </Principal>
+            <Dependent Role="CrtMonstro">
+              <PropertyRef Name="EfeitoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LogAcesso_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="LogAcesso" Type="Self.LogAcesso" Multiplicity="*" />
@@ -37,12 +161,101 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MnstEfeito_EfPendulo">
+          <End Role="EfPendulo" Type="Self.EfPendulo" Multiplicity="0..1" />
+          <End Role="MnstEfeito" Type="Self.MnstEfeito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EfPendulo">
+              <PropertyRef Name="IdPendulo" />
+            </Principal>
+            <Dependent Role="MnstEfeito">
+              <PropertyRef Name="PenduloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tipo_CrtArmadilha">
+          <End Role="CrtArmadilha" Type="Self.CrtArmadilha" Multiplicity="0..1" />
+          <End Role="Tipo" Type="Self.Tipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtArmadilha">
+              <PropertyRef Name="IdArmadilha" />
+            </Principal>
+            <Dependent Role="Tipo">
+              <PropertyRef Name="ArmadilhaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tipo_CrtMagia">
+          <End Role="CrtMagia" Type="Self.CrtMagia" Multiplicity="0..1" />
+          <End Role="Tipo" Type="Self.Tipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtMagia">
+              <PropertyRef Name="IdMagia" />
+            </Principal>
+            <Dependent Role="Tipo">
+              <PropertyRef Name="MagiaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tipo_CrtMonstro">
+          <End Role="CrtMonstro" Type="Self.CrtMonstro" Multiplicity="0..1" />
+          <End Role="Tipo" Type="Self.Tipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtMonstro">
+              <PropertyRef Name="IdMonstro" />
+            </Principal>
+            <Dependent Role="Tipo">
+              <PropertyRef Name="MonstroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="YuGiOhDBModelStoreContainer">
+          <EntitySet Name="Atributo" EntityType="Self.Atributo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Carta" EntityType="Self.Carta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CrtArmadilha" EntityType="Self.CrtArmadilha" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CrtMagia" EntityType="Self.CrtMagia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CrtMonstro" EntityType="Self.CrtMonstro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EfPendulo" EntityType="Self.EfPendulo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Icone" EntityType="Self.Icone" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogAcesso" EntityType="Self.LogAcesso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MnstEfeito" EntityType="Self.MnstEfeito" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo" EntityType="Self.Tipo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Carta_Atributo" Association="Self.FK_Carta_Atributo">
+            <End Role="Atributo" EntitySet="Atributo" />
+            <End Role="Carta" EntitySet="Carta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_Icone" Association="Self.FK_Carta_Icone">
+            <End Role="Icone" EntitySet="Icone" />
+            <End Role="Carta" EntitySet="Carta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_Tipo" Association="Self.FK_Carta_Tipo">
+            <End Role="Tipo" EntitySet="Tipo" />
+            <End Role="Carta" EntitySet="Carta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CrtMonstro_MnstEfeito" Association="Self.FK_CrtMonstro_MnstEfeito">
+            <End Role="MnstEfeito" EntitySet="MnstEfeito" />
+            <End Role="CrtMonstro" EntitySet="CrtMonstro" />
+          </AssociationSet>
           <AssociationSet Name="FK_LogAcesso_Usuario" Association="Self.FK_LogAcesso_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="LogAcesso" EntitySet="LogAcesso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MnstEfeito_EfPendulo" Association="Self.FK_MnstEfeito_EfPendulo">
+            <End Role="EfPendulo" EntitySet="EfPendulo" />
+            <End Role="MnstEfeito" EntitySet="MnstEfeito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tipo_CrtArmadilha" Association="Self.FK_Tipo_CrtArmadilha">
+            <End Role="CrtArmadilha" EntitySet="CrtArmadilha" />
+            <End Role="Tipo" EntitySet="Tipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tipo_CrtMagia" Association="Self.FK_Tipo_CrtMagia">
+            <End Role="CrtMagia" EntitySet="CrtMagia" />
+            <End Role="Tipo" EntitySet="Tipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tipo_CrtMonstro" Association="Self.FK_Tipo_CrtMonstro">
+            <End Role="CrtMonstro" EntitySet="CrtMonstro" />
+            <End Role="Tipo" EntitySet="Tipo" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -55,6 +268,47 @@
           <AssociationSet Name="FK_LogAcesso_Usuario" Association="YuGiOhDBModel.FK_LogAcesso_Usuario">
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="LogAcesso" EntitySet="LogAcessoes" />
+          </AssociationSet>
+          <EntitySet Name="Atributoes" EntityType="YuGiOhDBModel.Atributo" />
+          <EntitySet Name="Cartas" EntityType="YuGiOhDBModel.Carta" />
+          <EntitySet Name="CrtArmadilhas" EntityType="YuGiOhDBModel.CrtArmadilha" />
+          <EntitySet Name="CrtMagias" EntityType="YuGiOhDBModel.CrtMagia" />
+          <EntitySet Name="CrtMonstroes" EntityType="YuGiOhDBModel.CrtMonstro" />
+          <EntitySet Name="EfPenduloes" EntityType="YuGiOhDBModel.EfPendulo" />
+          <EntitySet Name="Icones" EntityType="YuGiOhDBModel.Icone" />
+          <EntitySet Name="MnstEfeitoes" EntityType="YuGiOhDBModel.MnstEfeito" />
+          <EntitySet Name="Tipoes" EntityType="YuGiOhDBModel.Tipo" />
+          <AssociationSet Name="FK_Carta_Atributo" Association="YuGiOhDBModel.FK_Carta_Atributo">
+            <End Role="Atributo" EntitySet="Atributoes" />
+            <End Role="Carta" EntitySet="Cartas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_Icone" Association="YuGiOhDBModel.FK_Carta_Icone">
+            <End Role="Icone" EntitySet="Icones" />
+            <End Role="Carta" EntitySet="Cartas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_Tipo" Association="YuGiOhDBModel.FK_Carta_Tipo">
+            <End Role="Tipo" EntitySet="Tipoes" />
+            <End Role="Carta" EntitySet="Cartas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tipo_CrtArmadilha" Association="YuGiOhDBModel.FK_Tipo_CrtArmadilha">
+            <End Role="CrtArmadilha" EntitySet="CrtArmadilhas" />
+            <End Role="Tipo" EntitySet="Tipoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tipo_CrtMagia" Association="YuGiOhDBModel.FK_Tipo_CrtMagia">
+            <End Role="CrtMagia" EntitySet="CrtMagias" />
+            <End Role="Tipo" EntitySet="Tipoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CrtMonstro_MnstEfeito" Association="YuGiOhDBModel.FK_CrtMonstro_MnstEfeito">
+            <End Role="MnstEfeito" EntitySet="MnstEfeitoes" />
+            <End Role="CrtMonstro" EntitySet="CrtMonstroes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tipo_CrtMonstro" Association="YuGiOhDBModel.FK_Tipo_CrtMonstro">
+            <End Role="CrtMonstro" EntitySet="CrtMonstroes" />
+            <End Role="Tipo" EntitySet="Tipoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MnstEfeito_EfPendulo" Association="YuGiOhDBModel.FK_MnstEfeito_EfPendulo">
+            <End Role="EfPendulo" EntitySet="EfPenduloes" />
+            <End Role="MnstEfeito" EntitySet="MnstEfeitoes" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Usuario">
@@ -91,6 +345,194 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Atributo">
+          <Key>
+            <PropertyRef Name="IdAtributo" />
+          </Key>
+          <Property Name="IdAtributo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_Atributo" FromRole="Atributo" ToRole="Carta" />
+        </EntityType>
+        <EntityType Name="Carta">
+          <Key>
+            <PropertyRef Name="IdCarta" />
+          </Key>
+          <Property Name="IdCarta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Nivel" Type="Int32" />
+          <Property Name="Numero" Type="Int32" Nullable="false" />
+          <Property Name="PtnAtaque" Type="Int32" />
+          <Property Name="PtnDefesa" Type="Int32" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="AtributoId" Type="Int32" />
+          <Property Name="IconeId" Type="Int32" />
+          <Property Name="TipoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Atributo" Relationship="YuGiOhDBModel.FK_Carta_Atributo" FromRole="Carta" ToRole="Atributo" />
+          <NavigationProperty Name="Icone" Relationship="YuGiOhDBModel.FK_Carta_Icone" FromRole="Carta" ToRole="Icone" />
+          <NavigationProperty Name="Tipo" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Carta" ToRole="Tipo" />
+        </EntityType>
+        <EntityType Name="CrtArmadilha">
+          <Key>
+            <PropertyRef Name="IdArmadilha" />
+          </Key>
+          <Property Name="IdArmadilha" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tipoes" Relationship="YuGiOhDBModel.FK_Tipo_CrtArmadilha" FromRole="CrtArmadilha" ToRole="Tipo" />
+        </EntityType>
+        <EntityType Name="CrtMagia">
+          <Key>
+            <PropertyRef Name="IdMagia" />
+          </Key>
+          <Property Name="IdMagia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tipoes" Relationship="YuGiOhDBModel.FK_Tipo_CrtMagia" FromRole="CrtMagia" ToRole="Tipo" />
+        </EntityType>
+        <EntityType Name="CrtMonstro">
+          <Key>
+            <PropertyRef Name="IdMonstro" />
+          </Key>
+          <Property Name="IdMonstro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EfeitoId" Type="Int32" />
+          <NavigationProperty Name="MnstEfeito" Relationship="YuGiOhDBModel.FK_CrtMonstro_MnstEfeito" FromRole="CrtMonstro" ToRole="MnstEfeito" />
+          <NavigationProperty Name="Tipoes" Relationship="YuGiOhDBModel.FK_Tipo_CrtMonstro" FromRole="CrtMonstro" ToRole="Tipo" />
+        </EntityType>
+        <EntityType Name="EfPendulo">
+          <Key>
+            <PropertyRef Name="IdPendulo" />
+          </Key>
+          <Property Name="IdPendulo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MnstEfeitoes" Relationship="YuGiOhDBModel.FK_MnstEfeito_EfPendulo" FromRole="EfPendulo" ToRole="MnstEfeito" />
+        </EntityType>
+        <EntityType Name="Icone">
+          <Key>
+            <PropertyRef Name="IdIcone" />
+          </Key>
+          <Property Name="IdIcone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_Icone" FromRole="Icone" ToRole="Carta" />
+        </EntityType>
+        <EntityType Name="MnstEfeito">
+          <Key>
+            <PropertyRef Name="IdEfeito" />
+          </Key>
+          <Property Name="IdEfeito" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PenduloId" Type="Int32" />
+          <NavigationProperty Name="CrtMonstroes" Relationship="YuGiOhDBModel.FK_CrtMonstro_MnstEfeito" FromRole="MnstEfeito" ToRole="CrtMonstro" />
+          <NavigationProperty Name="EfPendulo" Relationship="YuGiOhDBModel.FK_MnstEfeito_EfPendulo" FromRole="MnstEfeito" ToRole="EfPendulo" />
+        </EntityType>
+        <EntityType Name="Tipo">
+          <Key>
+            <PropertyRef Name="IdTipo" />
+          </Key>
+          <Property Name="IdTipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MonstroId" Type="Int32" />
+          <Property Name="ArmadilhaId" Type="Int32" />
+          <Property Name="MagiaId" Type="Int32" />
+          <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Tipo" ToRole="Carta" />
+          <NavigationProperty Name="CrtArmadilha" Relationship="YuGiOhDBModel.FK_Tipo_CrtArmadilha" FromRole="Tipo" ToRole="CrtArmadilha" />
+          <NavigationProperty Name="CrtMagia" Relationship="YuGiOhDBModel.FK_Tipo_CrtMagia" FromRole="Tipo" ToRole="CrtMagia" />
+          <NavigationProperty Name="CrtMonstro" Relationship="YuGiOhDBModel.FK_Tipo_CrtMonstro" FromRole="Tipo" ToRole="CrtMonstro" />
+        </EntityType>
+        <Association Name="FK_Carta_Atributo">
+          <End Type="YuGiOhDBModel.Atributo" Role="Atributo" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Atributo">
+              <PropertyRef Name="IdAtributo" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="AtributoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_Icone">
+          <End Type="YuGiOhDBModel.Icone" Role="Icone" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Icone">
+              <PropertyRef Name="IdIcone" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="IconeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_Tipo">
+          <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo">
+              <PropertyRef Name="IdTipo" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="TipoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tipo_CrtArmadilha">
+          <End Type="YuGiOhDBModel.CrtArmadilha" Role="CrtArmadilha" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtArmadilha">
+              <PropertyRef Name="IdArmadilha" />
+            </Principal>
+            <Dependent Role="Tipo">
+              <PropertyRef Name="ArmadilhaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tipo_CrtMagia">
+          <End Type="YuGiOhDBModel.CrtMagia" Role="CrtMagia" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtMagia">
+              <PropertyRef Name="IdMagia" />
+            </Principal>
+            <Dependent Role="Tipo">
+              <PropertyRef Name="MagiaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CrtMonstro_MnstEfeito">
+          <End Type="YuGiOhDBModel.MnstEfeito" Role="MnstEfeito" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.CrtMonstro" Role="CrtMonstro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MnstEfeito">
+              <PropertyRef Name="IdEfeito" />
+            </Principal>
+            <Dependent Role="CrtMonstro">
+              <PropertyRef Name="EfeitoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tipo_CrtMonstro">
+          <End Type="YuGiOhDBModel.CrtMonstro" Role="CrtMonstro" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtMonstro">
+              <PropertyRef Name="IdMonstro" />
+            </Principal>
+            <Dependent Role="Tipo">
+              <PropertyRef Name="MonstroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MnstEfeito_EfPendulo">
+          <End Type="YuGiOhDBModel.EfPendulo" Role="EfPendulo" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.MnstEfeito" Role="MnstEfeito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EfPendulo">
+              <PropertyRef Name="IdPendulo" />
+            </Principal>
+            <Dependent Role="MnstEfeito">
+              <PropertyRef Name="PenduloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -116,6 +558,91 @@
                 <ScalarProperty Name="UltimoAcesso" ColumnName="UltimoAcesso" />
                 <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
                 <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Atributoes">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.Atributo">
+              <MappingFragment StoreEntitySet="Atributo">
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdAtributo" ColumnName="IdAtributo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cartas">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.Carta">
+              <MappingFragment StoreEntitySet="Carta">
+                <ScalarProperty Name="TipoId" ColumnName="TipoId" />
+                <ScalarProperty Name="IconeId" ColumnName="IconeId" />
+                <ScalarProperty Name="AtributoId" ColumnName="AtributoId" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="PtnDefesa" ColumnName="PtnDefesa" />
+                <ScalarProperty Name="PtnAtaque" ColumnName="PtnAtaque" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="IdCarta" ColumnName="IdCarta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrtArmadilhas">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.CrtArmadilha">
+              <MappingFragment StoreEntitySet="CrtArmadilha">
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdArmadilha" ColumnName="IdArmadilha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrtMagias">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.CrtMagia">
+              <MappingFragment StoreEntitySet="CrtMagia">
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdMagia" ColumnName="IdMagia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrtMonstroes">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.CrtMonstro">
+              <MappingFragment StoreEntitySet="CrtMonstro">
+                <ScalarProperty Name="EfeitoId" ColumnName="EfeitoId" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdMonstro" ColumnName="IdMonstro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EfPenduloes">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.EfPendulo">
+              <MappingFragment StoreEntitySet="EfPendulo">
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdPendulo" ColumnName="IdPendulo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Icones">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.Icone">
+              <MappingFragment StoreEntitySet="Icone">
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdIcone" ColumnName="IdIcone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MnstEfeitoes">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.MnstEfeito">
+              <MappingFragment StoreEntitySet="MnstEfeito">
+                <ScalarProperty Name="PenduloId" ColumnName="PenduloId" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdEfeito" ColumnName="IdEfeito" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipoes">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.Tipo">
+              <MappingFragment StoreEntitySet="Tipo">
+                <ScalarProperty Name="MagiaId" ColumnName="MagiaId" />
+                <ScalarProperty Name="ArmadilhaId" ColumnName="ArmadilhaId" />
+                <ScalarProperty Name="MonstroId" ColumnName="MonstroId" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
