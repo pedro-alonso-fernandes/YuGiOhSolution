@@ -154,6 +154,10 @@
                 <br />
                 <br />
 
+                <asp:FileUpload  ID="imgSelecionada" runat="server" />
+                <br />
+                <br />
+
                 <asp:Button Text="Cadastrar" runat="server" id="btnCadastrar" OnClick="btnCadastrar_Click"/>
                 <br />
                 <br />

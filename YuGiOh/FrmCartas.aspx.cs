@@ -23,6 +23,7 @@ namespace YuGiOh
                 ddlArmadilhas.Items.Insert(0, " ");
                 ddlMagias.Items.Insert(0, " ");
 
+
             }
 
             DivMonstro.Visible = false;
@@ -30,7 +31,7 @@ namespace YuGiOh
             DivMagia.Visible = false;
             DivEfeitos.Visible = false;
             DivPendulos.Visible = false;
-            //selecionar o index 0 do ddlTipo
+
 
         }
 
@@ -122,12 +123,12 @@ namespace YuGiOh
         {
 
             string nome = txtNome.Value;
-            
+
             string atributo = ddlAtributo.SelectedValue;
             string icone = ddlIcone.SelectedValue;
             string tipo = ddlTipo.SelectedValue;
             string numero = txtNumero.Value;
-            
+
             string descricao = txtDescricao.Value;
 
             string tipoMonstro = ddlMonstros.SelectedValue;
@@ -138,13 +139,13 @@ namespace YuGiOh
 
             string tipoMagia = ddlMagias.SelectedValue;
 
-            if (nome != "" && nmrNivel.Value != "0" && atributo != " " && icone != " " && tipo != " " && numero != "" && nmrPtnAtaque.Value != "0" && nmrPtnDefesa.Value != "0" && descricao != "" && nome != " " && numero != " " && descricao != " " && (tipoMonstro != " " || tipoArmadilha != " " || tipoMagia != " "))
+            /*if (nome != "" && nmrNivel.Value != "0" && atributo != " " && icone != " " && tipo != " " && numero != "" && nmrPtnAtaque.Value != "0" && nmrPtnDefesa.Value != "0" && descricao != "" && nome != " " && numero != " " && descricao != " " && (tipoMonstro != " " || tipoArmadilha != " " || tipoMagia != " "))
             {
 
                 int nivel = Convert.ToInt32(nmrNivel.Value);
                 int ptnAtaque = Convert.ToInt32(nmrPtnAtaque.Value);
                 int ptnDefesa = Convert.ToInt32(nmrPtnDefesa.Value);
-                
+
 
                 Carta c = new Carta();
                 Atributo at = new Atributo();
@@ -185,10 +186,12 @@ namespace YuGiOh
                         if (pe.Descricao != " " && pe.Descricao != null)
                         {
                             mensagem = Cartas.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe);
+                            lblMensagem.InnerText = mensagem;
                         }
                         else
                         {
                             mensagem = Cartas.CadastrarMonstroEfeito(c, at, i, ti, mo, ef);
+                            lblMensagem.InnerText = mensagem;
                         }
 
                     }
@@ -199,12 +202,46 @@ namespace YuGiOh
                     }
 
                 }
+                //Fazer os ifs dos outros tipos
 
 
-            }
-            else
+
+                
+
+
+                }
+                else
+                {
+                    lblMensagem.InnerText = "Você deixou campos em branco, preencha todos os campos!";
+                }*/
+
+            if (imgSelecionada.HasFile)
             {
-                lblMensagem.InnerText = "Você deixou campos em branco, preencha todos os campos!";
+                var arquivo = imgSelecionada.PostedFile;
+                string tipoImg = arquivo.ContentType;
+
+                if (tipoImg.Contains("image/"))
+                {
+
+                    string extensao = tipoImg.Replace("image/", "");
+
+                    //{[("'ID INVENTADO!!!!!!!'")]};
+                    int id = 333;
+
+                    string nomeArquivo = id + "." + extensao;
+                    var caminho = MapPath("~/upload") + "\\" + nomeArquivo;
+                    arquivo.SaveAs(caminho;
+
+                    //imgSelecionada.Src = "~/upload/" + nomeArquivo;
+                    lblMensagem.InnerText = "parece que deu certo";
+
+                }
+                else
+                {
+
+                    lblMensagem.InnerText = "O arquivo selecionado não é uma imagem. Tente selicionar um arquivo tipo JPEG, JPG ou PNG";
+
+                }
             }
         }
     }
