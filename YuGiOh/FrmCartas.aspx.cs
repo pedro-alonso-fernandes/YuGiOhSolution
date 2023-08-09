@@ -14,10 +14,22 @@ namespace YuGiOh
             if (!Page.IsPostBack) { 
 
                 ddlTipo.Items.Insert(0, " ");
-                DivMonstro.Visible = false;
-                DivArmadilha.Visible = false;
-                DivMagia.Visible = false;
+                ddlAtributo.Items.Insert(0, " ");
+                ddlIcone.Items.Insert(0, " ");
+                ddlMonstros.Items.Insert(0, " ");
+                ddlEfeitos.Items.Insert(0, " ");
+                ddlPendulos.Items.Insert(0, " ");
+                ddlArmadilhas.Items.Insert(0, " ");
+                ddlMagias.Items.Insert(0, " ");
+
             }
+
+            DivMonstro.Visible = false;
+            DivArmadilha.Visible = false;
+            DivMagia.Visible = false;
+            DivEfeitos.Visible = false;
+            DivPendulos.Visible = false;
+
         }
 
         protected void ddlTipo_SelectedIndexChanged(object sender, EventArgs e)
@@ -29,6 +41,9 @@ namespace YuGiOh
                 DivMonstro.Visible = true;
                 DivArmadilha.Visible = false;
                 DivMagia.Visible = false;
+                DivEfeitos.Visible = false;
+                DivPendulos.Visible = false;
+
             }
             
             else if(valorSelecionado.Contains("Armadilha"))
@@ -36,6 +51,9 @@ namespace YuGiOh
                 DivMonstro.Visible = false;
                 DivArmadilha.Visible = true;
                 DivMagia.Visible = false;
+                DivEfeitos.Visible = false;
+                DivPendulos.Visible = false;
+
             }
 
             else if(valorSelecionado.Contains("Magia"))
@@ -43,7 +61,59 @@ namespace YuGiOh
                 DivMonstro.Visible = false;
                 DivArmadilha.Visible = false;
                 DivMagia.Visible = true;
+                DivEfeitos.Visible = false;
+                DivPendulos.Visible = false;
+
             }
+
+            else
+            {
+                DivMonstro.Visible = false;
+                DivArmadilha.Visible = false;
+                DivMagia.Visible = false;
+                DivEfeitos.Visible = false;
+                DivPendulos.Visible = false;
+
+            }
+        }
+
+        protected void ddlMonstros_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var valorSelecionado = ((DropDownList)sender).SelectedValue;
+
+            if (valorSelecionado.Contains("Efeito"))
+            {
+                DivEfeitos.Visible = true;
+                DivMonstro.Visible = true;
+
+            }
+            else
+            {
+                DivEfeitos.Visible = false;
+                DivMonstro.Visible = true;
+
+            }
+        }
+
+        protected void ddlEfeitos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var valorSelecionado = ((DropDownList)sender).SelectedValue;
+
+            if (valorSelecionado.Contains("Pêndulo"))
+            {
+
+                DivPendulos.Visible = true;
+                DivMonstro.Visible = true;
+                DivEfeitos.Visible = true;
+
+            }
+            else
+            {
+                DivPendulos.Visible = false;
+                DivMonstro.Visible = true;
+                DivEfeitos.Visible = true;
+            }
+
         }
     }
 }
