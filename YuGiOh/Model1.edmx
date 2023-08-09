@@ -19,7 +19,7 @@
           <Property Name="IdCarta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Nivel" Type="int" />
-          <Property Name="Numero" Type="int" Nullable="false" />
+          <Property Name="Numero" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PtnAtaque" Type="int" />
           <Property Name="PtnDefesa" Type="int" />
           <Property Name="Descricao" Type="varchar" MaxLength="2000" Nullable="false" />
@@ -270,7 +270,6 @@
             <End Role="LogAcesso" EntitySet="LogAcessoes" />
           </AssociationSet>
           <EntitySet Name="Atributoes" EntityType="YuGiOhDBModel.Atributo" />
-          <EntitySet Name="Cartas" EntityType="YuGiOhDBModel.Carta" />
           <EntitySet Name="CrtArmadilhas" EntityType="YuGiOhDBModel.CrtArmadilha" />
           <EntitySet Name="CrtMagias" EntityType="YuGiOhDBModel.CrtMagia" />
           <EntitySet Name="CrtMonstroes" EntityType="YuGiOhDBModel.CrtMonstro" />
@@ -278,18 +277,6 @@
           <EntitySet Name="Icones" EntityType="YuGiOhDBModel.Icone" />
           <EntitySet Name="MnstEfeitoes" EntityType="YuGiOhDBModel.MnstEfeito" />
           <EntitySet Name="Tipoes" EntityType="YuGiOhDBModel.Tipo" />
-          <AssociationSet Name="FK_Carta_Atributo" Association="YuGiOhDBModel.FK_Carta_Atributo">
-            <End Role="Atributo" EntitySet="Atributoes" />
-            <End Role="Carta" EntitySet="Cartas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Carta_Icone" Association="YuGiOhDBModel.FK_Carta_Icone">
-            <End Role="Icone" EntitySet="Icones" />
-            <End Role="Carta" EntitySet="Cartas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Carta_Tipo" Association="YuGiOhDBModel.FK_Carta_Tipo">
-            <End Role="Tipo" EntitySet="Tipoes" />
-            <End Role="Carta" EntitySet="Cartas" />
-          </AssociationSet>
           <AssociationSet Name="FK_Tipo_CrtArmadilha" Association="YuGiOhDBModel.FK_Tipo_CrtArmadilha">
             <End Role="CrtArmadilha" EntitySet="CrtArmadilhas" />
             <End Role="Tipo" EntitySet="Tipoes" />
@@ -309,6 +296,19 @@
           <AssociationSet Name="FK_MnstEfeito_EfPendulo" Association="YuGiOhDBModel.FK_MnstEfeito_EfPendulo">
             <End Role="EfPendulo" EntitySet="EfPenduloes" />
             <End Role="MnstEfeito" EntitySet="MnstEfeitoes" />
+          </AssociationSet>
+          <EntitySet Name="Cartas" EntityType="YuGiOhDBModel.Carta" />
+          <AssociationSet Name="FK_Carta_Atributo" Association="YuGiOhDBModel.FK_Carta_Atributo">
+            <End Role="Atributo" EntitySet="Atributoes" />
+            <End Role="Carta" EntitySet="Cartas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_Icone" Association="YuGiOhDBModel.FK_Carta_Icone">
+            <End Role="Icone" EntitySet="Icones" />
+            <End Role="Carta" EntitySet="Cartas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_Tipo" Association="YuGiOhDBModel.FK_Carta_Tipo">
+            <End Role="Tipo" EntitySet="Tipoes" />
+            <End Role="Carta" EntitySet="Cartas" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Usuario">
@@ -352,24 +352,6 @@
           <Property Name="IdAtributo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descricao" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_Atributo" FromRole="Atributo" ToRole="Carta" />
-        </EntityType>
-        <EntityType Name="Carta">
-          <Key>
-            <PropertyRef Name="IdCarta" />
-          </Key>
-          <Property Name="IdCarta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Nivel" Type="Int32" />
-          <Property Name="Numero" Type="Int32" Nullable="false" />
-          <Property Name="PtnAtaque" Type="Int32" />
-          <Property Name="PtnDefesa" Type="Int32" />
-          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="AtributoId" Type="Int32" />
-          <Property Name="IconeId" Type="Int32" />
-          <Property Name="TipoId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Atributo" Relationship="YuGiOhDBModel.FK_Carta_Atributo" FromRole="Carta" ToRole="Atributo" />
-          <NavigationProperty Name="Icone" Relationship="YuGiOhDBModel.FK_Carta_Icone" FromRole="Carta" ToRole="Icone" />
-          <NavigationProperty Name="Tipo" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Carta" ToRole="Tipo" />
         </EntityType>
         <EntityType Name="CrtArmadilha">
           <Key>
@@ -432,47 +414,11 @@
           <Property Name="MonstroId" Type="Int32" />
           <Property Name="ArmadilhaId" Type="Int32" />
           <Property Name="MagiaId" Type="Int32" />
-          <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Tipo" ToRole="Carta" />
           <NavigationProperty Name="CrtArmadilha" Relationship="YuGiOhDBModel.FK_Tipo_CrtArmadilha" FromRole="Tipo" ToRole="CrtArmadilha" />
           <NavigationProperty Name="CrtMagia" Relationship="YuGiOhDBModel.FK_Tipo_CrtMagia" FromRole="Tipo" ToRole="CrtMagia" />
           <NavigationProperty Name="CrtMonstro" Relationship="YuGiOhDBModel.FK_Tipo_CrtMonstro" FromRole="Tipo" ToRole="CrtMonstro" />
+          <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Tipo" ToRole="Carta" />
         </EntityType>
-        <Association Name="FK_Carta_Atributo">
-          <End Type="YuGiOhDBModel.Atributo" Role="Atributo" Multiplicity="0..1" />
-          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Atributo">
-              <PropertyRef Name="IdAtributo" />
-            </Principal>
-            <Dependent Role="Carta">
-              <PropertyRef Name="AtributoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Carta_Icone">
-          <End Type="YuGiOhDBModel.Icone" Role="Icone" Multiplicity="0..1" />
-          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Icone">
-              <PropertyRef Name="IdIcone" />
-            </Principal>
-            <Dependent Role="Carta">
-              <PropertyRef Name="IconeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Carta_Tipo">
-          <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="1" />
-          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tipo">
-              <PropertyRef Name="IdTipo" />
-            </Principal>
-            <Dependent Role="Carta">
-              <PropertyRef Name="TipoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Tipo_CrtArmadilha">
           <End Type="YuGiOhDBModel.CrtArmadilha" Role="CrtArmadilha" Multiplicity="0..1" />
           <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="*" />
@@ -533,6 +479,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Carta">
+          <Key>
+            <PropertyRef Name="IdCarta" />
+          </Key>
+          <Property Name="IdCarta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Nivel" Type="Int32" />
+          <Property Name="Numero" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PtnAtaque" Type="Int32" />
+          <Property Name="PtnDefesa" Type="Int32" />
+          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="AtributoId" Type="Int32" />
+          <Property Name="IconeId" Type="Int32" />
+          <Property Name="TipoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Atributo" Relationship="YuGiOhDBModel.FK_Carta_Atributo" FromRole="Carta" ToRole="Atributo" />
+          <NavigationProperty Name="Icone" Relationship="YuGiOhDBModel.FK_Carta_Icone" FromRole="Carta" ToRole="Icone" />
+          <NavigationProperty Name="Tipo" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Carta" ToRole="Tipo" />
+        </EntityType>
+        <Association Name="FK_Carta_Atributo">
+          <End Type="YuGiOhDBModel.Atributo" Role="Atributo" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Atributo">
+              <PropertyRef Name="IdAtributo" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="AtributoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_Icone">
+          <End Type="YuGiOhDBModel.Icone" Role="Icone" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Icone">
+              <PropertyRef Name="IdIcone" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="IconeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_Tipo">
+          <End Type="YuGiOhDBModel.Tipo" Role="Tipo" Multiplicity="1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo">
+              <PropertyRef Name="IdTipo" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="TipoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -566,22 +566,6 @@
               <MappingFragment StoreEntitySet="Atributo">
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />
                 <ScalarProperty Name="IdAtributo" ColumnName="IdAtributo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cartas">
-            <EntityTypeMapping TypeName="YuGiOhDBModel.Carta">
-              <MappingFragment StoreEntitySet="Carta">
-                <ScalarProperty Name="TipoId" ColumnName="TipoId" />
-                <ScalarProperty Name="IconeId" ColumnName="IconeId" />
-                <ScalarProperty Name="AtributoId" ColumnName="AtributoId" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-                <ScalarProperty Name="PtnDefesa" ColumnName="PtnDefesa" />
-                <ScalarProperty Name="PtnAtaque" ColumnName="PtnAtaque" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="IdCarta" ColumnName="IdCarta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -643,6 +627,22 @@
                 <ScalarProperty Name="MonstroId" ColumnName="MonstroId" />
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />
                 <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cartas">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.Carta">
+              <MappingFragment StoreEntitySet="Carta">
+                <ScalarProperty Name="TipoId" ColumnName="TipoId" />
+                <ScalarProperty Name="IconeId" ColumnName="IconeId" />
+                <ScalarProperty Name="AtributoId" ColumnName="AtributoId" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="PtnDefesa" ColumnName="PtnDefesa" />
+                <ScalarProperty Name="PtnAtaque" ColumnName="PtnAtaque" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="IdCarta" ColumnName="IdCarta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

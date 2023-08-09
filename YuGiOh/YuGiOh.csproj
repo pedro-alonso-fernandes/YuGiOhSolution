@@ -103,6 +103,7 @@
     <Compile Include="Carta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cartas.cs" />
     <Compile Include="CrtArmadilha.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

@@ -11,7 +11,8 @@ namespace YuGiOh
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack) { 
+            if (!Page.IsPostBack)
+            {
 
                 ddlTipo.Items.Insert(0, " ");
                 ddlAtributo.Items.Insert(0, " ");
@@ -29,6 +30,7 @@ namespace YuGiOh
             DivMagia.Visible = false;
             DivEfeitos.Visible = false;
             DivPendulos.Visible = false;
+            //selecionar o index 0 do ddlTipo
 
         }
 
@@ -36,7 +38,7 @@ namespace YuGiOh
         {
             var valorSelecionado = ((DropDownList)sender).SelectedValue;
 
-            if(valorSelecionado.Contains("Monstro"))
+            if (valorSelecionado.Contains("Monstro"))
             {
                 DivMonstro.Visible = true;
                 DivArmadilha.Visible = false;
@@ -45,8 +47,8 @@ namespace YuGiOh
                 DivPendulos.Visible = false;
 
             }
-            
-            else if(valorSelecionado.Contains("Armadilha"))
+
+            else if (valorSelecionado.Contains("Armadilha"))
             {
                 DivMonstro.Visible = false;
                 DivArmadilha.Visible = true;
@@ -56,7 +58,7 @@ namespace YuGiOh
 
             }
 
-            else if(valorSelecionado.Contains("Magia"))
+            else if (valorSelecionado.Contains("Magia"))
             {
                 DivMonstro.Visible = false;
                 DivArmadilha.Visible = false;
@@ -114,6 +116,96 @@ namespace YuGiOh
                 DivEfeitos.Visible = true;
             }
 
+        }
+
+        protected void btnCadastrar_Click(object sender, EventArgs e)
+        {
+
+            string nome = txtNome.Value;
+            
+            string atributo = ddlAtributo.SelectedValue;
+            string icone = ddlIcone.SelectedValue;
+            string tipo = ddlTipo.SelectedValue;
+            string numero = txtNumero.Value;
+            
+            string descricao = txtDescricao.Value;
+
+            string tipoMonstro = ddlMonstros.SelectedValue;
+            string mnstEfeito = ddlEfeitos.SelectedValue;
+            string efPendulo = ddlPendulos.SelectedValue;
+
+            string tipoArmadilha = ddlArmadilhas.SelectedValue;
+
+            string tipoMagia = ddlMagias.SelectedValue;
+
+            if (nome != "" && nmrNivel.Value != "0" && atributo != " " && icone != " " && tipo != " " && numero != "" && nmrPtnAtaque.Value != "0" && nmrPtnDefesa.Value != "0" && descricao != "" && nome != " " && numero != " " && descricao != " " && (tipoMonstro != " " || tipoArmadilha != " " || tipoMagia != " "))
+            {
+
+                int nivel = Convert.ToInt32(nmrNivel.Value);
+                int ptnAtaque = Convert.ToInt32(nmrPtnAtaque.Value);
+                int ptnDefesa = Convert.ToInt32(nmrPtnDefesa.Value);
+                
+
+                Carta c = new Carta();
+                Atributo at = new Atributo();
+                Icone i = new Icone();
+                Tipo ti = new Tipo();
+                CrtMonstro mo = new CrtMonstro();
+                CrtArmadilha ar = new CrtArmadilha();
+                CrtMagia ma = new CrtMagia();
+                MnstEfeito ef = new MnstEfeito();
+                EfPendulo pe = new EfPendulo();
+
+                string mensagem = null;
+
+                c.Nome = nome;
+                c.Nivel = nivel;
+                at.Descricao = atributo;
+                i.Descricao = icone;
+                ti.Descricao = tipo;
+                c.Numero = numero;
+                c.PtnAtaque = ptnAtaque;
+                c.PtnDefesa = ptnDefesa;
+                c.Descricao = descricao;
+
+                mo.Descricao = tipoMonstro;
+                ef.Descricao = mnstEfeito;
+                pe.Descricao = efPendulo;
+
+                ar.Descricao = tipoArmadilha;
+
+                ma.Descricao = tipoMagia;
+
+                if (mo.Descricao != " " && mo.Descricao != null)
+                {
+
+                    if (ef.Descricao != " " && ef.Descricao != null)
+                    {
+
+                        if (pe.Descricao != " " && pe.Descricao != null)
+                        {
+                            mensagem = Cartas.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe);
+                        }
+                        else
+                        {
+                            mensagem = Cartas.CadastrarMonstroEfeito(c, at, i, ti, mo, ef);
+                        }
+
+                    }
+                    else
+                    {
+                        mensagem = Cartas.CadastrarMonstro(c, at, i, ti, mo);
+                        lblMensagem.InnerText = mensagem;
+                    }
+
+                }
+
+
+            }
+            else
+            {
+                lblMensagem.InnerText = "Você deixou campos em branco, preencha todos os campos!";
+            }
         }
     }
 }

@@ -26,10 +26,10 @@ namespace YuGiOh
         public Nullable<int> ArmadilhaId { get; set; }
         public Nullable<int> MagiaId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Carta> Cartas { get; set; }
         public virtual CrtArmadilha CrtArmadilha { get; set; }
         public virtual CrtMagia CrtMagia { get; set; }
         public virtual CrtMonstro CrtMonstro { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Carta> Cartas { get; set; }
     }
 }

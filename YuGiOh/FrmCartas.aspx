@@ -150,11 +150,11 @@
 
                 <label>Descrição:</label>
                 <br />
-                <textarea id="TextArea" cols="80" rows="10"></textarea>
+                <textarea id="txtDescricao" cols="80" rows="10" runat="server"></textarea>
                 <br />
                 <br />
 
-                <asp:Button Text="Cadastrar" runat="server" />
+                <asp:Button Text="Cadastrar" runat="server" id="btnCadastrar" OnClick="btnCadastrar_Click"/>
                 <br />
                 <br />
 
