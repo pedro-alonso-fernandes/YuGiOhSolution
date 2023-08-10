@@ -12,23 +12,18 @@ namespace YuGiOh
     using System;
     using System.Collections.Generic;
     
-    public partial class Tipo
+    public partial class CrtImagem
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Tipo()
+        public CrtImagem()
         {
             this.Cartas = new HashSet<Carta>();
         }
     
-        public int IdTipo { get; set; }
-        public string Descricao { get; set; }
-        public Nullable<int> MonstroId { get; set; }
-        public Nullable<int> ArmadilhaId { get; set; }
-        public Nullable<int> MagiaId { get; set; }
+        public int IdImagem { get; set; }
+        public string Nome { get; set; }
+        public string Src { get; set; }
     
-        public virtual CrtArmadilha CrtArmadilha { get; set; }
-        public virtual CrtMagia CrtMagia { get; set; }
-        public virtual CrtMonstro CrtMonstro { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Carta> Cartas { get; set; }
     }

@@ -17,16 +17,18 @@ namespace YuGiOh
         public int IdCarta { get; set; }
         public string Nome { get; set; }
         public Nullable<int> Nivel { get; set; }
-        public int Numero { get; set; }
+        public string Numero { get; set; }
         public Nullable<int> PtnAtaque { get; set; }
         public Nullable<int> PtnDefesa { get; set; }
         public string Descricao { get; set; }
         public Nullable<int> AtributoId { get; set; }
         public Nullable<int> IconeId { get; set; }
         public int TipoId { get; set; }
+        public Nullable<int> ImagemId { get; set; }
     
         public virtual Atributo Atributo { get; set; }
         public virtual Icone Icone { get; set; }
         public virtual Tipo Tipo { get; set; }
+        public virtual CrtImagem CrtImagem { get; set; }
     }
 }
