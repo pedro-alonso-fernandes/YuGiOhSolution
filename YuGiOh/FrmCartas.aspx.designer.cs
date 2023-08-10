@@ -213,6 +213,33 @@ namespace YuGiOh
         protected global::System.Web.UI.WebControls.FileUpload imgSelecionada;
 
         /// <summary>
+        /// Controle fieldImg.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl fieldImg;
+
+        /// <summary>
+        /// Controle ImgSite.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage ImgSite;
+
+        /// <summary>
+        /// Controle btnConfirmar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnConfirmar;
+
+        /// <summary>
         /// Controle btnCadastrar.
         /// </summary>
         /// <remarks>

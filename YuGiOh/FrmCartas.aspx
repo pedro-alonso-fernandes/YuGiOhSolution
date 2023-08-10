@@ -4,11 +4,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Cartas</title>
 </head>
 <body>
-    
+
     <form id="form1" runat="server">
         <asp:LoginName FormatString="{0} - " runat="server" />
         <asp:LoginStatus runat="server" ID="LoginStatus1" CssClass="logon" LoginText="Entrar" LogoutText="Sair" />
@@ -18,12 +18,12 @@
                 <legend>CADASTRO</legend>
 
                 <label>Nome:</label>
-                <input type="text" id="txtNome" runat="server"/>
+                <input type="text" id="txtNome" runat="server" />
                 <br />
                 <br />
 
                 <label>Nível:</label>
-                <input type="number" id="nmrNivel" runat="server" min="1" max="12"/>
+                <input type="number" id="nmrNivel" runat="server" min="1" max="12" />
                 <br />
                 <br />
 
@@ -68,7 +68,7 @@
                     </asp:DropDownList>
 
                     <br />
-                    
+
 
                     <div id="DivEfeitos" runat="server">
 
@@ -101,7 +101,7 @@
                 </div>
 
                 <div id="DivArmadilha" runat="server">
-                    
+
                     <br />
                     <label>Tipo de Armadilha:</label>
                     <asp:DropDownList runat="server" ID="ddlArmadilhas">
@@ -127,54 +127,54 @@
 
                 </div>
 
-                
-                    
+
+
                 <br />
                 <br />
-  
+
 
                 <label>Número da Carta:</label>
-                <input type="text" id="txtNumero" runat="server"/>
+                <input type="text" id="txtNumero" runat="server" />
                 <br />
                 <br />
 
                 <label>Pontos de Ataque:</label>
-                <input type="number" id="nmrPtnAtaque" runat="server" min="1" max="10000"/>
+                <input type="number" id="nmrPtnAtaque" runat="server" min="1" max="10000" />
                 <br />
                 <br />
 
                 <label>Pontos de Defesa:</label>
-                <input type="number" id="nmrPtnDefesa" runat="server" min="1" max="10000"/>
+                <input type="number" id="nmrPtnDefesa" runat="server" min="1" max="10000" />
                 <br />
                 <br />
 
                 <label>Descrição:</label>
                 <br />
-                <textarea id="txtDescricao" cols="80" rows="10" runat="server"></textarea>
+                <textarea id="txtDescricao" cols="120" rows="15" runat="server"></textarea>
                 <br />
                 <br />
 
-                <asp:FileUpload  ID="imgSelecionada" runat="server" />
+                <asp:FileUpload ID="imgSelecionada" runat="server" />
+                <br />
+
+                <fieldset id="fieldImg" runat="server" class="fieldImg">
+                    <img src="#" alt="Imagem" id="ImgSite" runat="server" />
+                </fieldset>
                 <br />
                 <br />
 
-                <asp:Button Text="Cadastrar" runat="server" id="btnCadastrar" OnClick="btnCadastrar_Click"/>
+                <asp:Button Text="Vizualizar Imagem" runat="server" ID="btnConfirmar" OnClick="btnConfirmar_Click" />
+                <br />
+                <br />
+
+                <asp:Button Text="Cadastrar" runat="server" ID="btnCadastrar" OnClick="btnCadastrar_Click" />
                 <br />
                 <br />
 
             </fieldset>
             <label id="lblMensagem" runat="server"></label>
 
-            <asp:ListView runat="server">
-                <ItemTemplate>
-                    <tr>
-                        <td>
-                            </td>
-                    </tr>
-                </ItemTemplate>
-            </asp:ListView>
-            <img src="upload/333.jpg" alt="eu ACHO que nao carregou(não tenho certeza)" />
-            <p>nada por aqui</p>
+
         </div>
     </form>
 </body>
