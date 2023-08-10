@@ -36,5 +36,6 @@ namespace YuGiOh
         public virtual DbSet<MnstEfeito> MnstEfeitoes { get; set; }
         public virtual DbSet<Tipo> Tipoes { get; set; }
         public virtual DbSet<Carta> Cartas { get; set; }
+        public virtual DbSet<CrtImagem> CrtImagems { get; set; }
     }
 }

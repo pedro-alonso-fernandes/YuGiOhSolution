@@ -107,6 +107,9 @@
     <Compile Include="CrtArmadilha.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="CrtImagem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="CrtMagia.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

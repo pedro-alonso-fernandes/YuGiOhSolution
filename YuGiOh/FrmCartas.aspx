@@ -164,6 +164,17 @@
 
             </fieldset>
             <label id="lblMensagem" runat="server"></label>
+
+            <asp:ListView runat="server">
+                <ItemTemplate>
+                    <tr>
+                        <td>
+                            </td>
+                    </tr>
+                </ItemTemplate>
+            </asp:ListView>
+            <img src="upload/333.jpg" alt="eu ACHO que nao carregou(não tenho certeza)" />
+            <p>nada por aqui</p>
         </div>
     </form>
 </body>

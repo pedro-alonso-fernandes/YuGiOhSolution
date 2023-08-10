@@ -139,7 +139,7 @@ namespace YuGiOh
 
             string tipoMagia = ddlMagias.SelectedValue;
 
-            /*if (nome != "" && nmrNivel.Value != "0" && atributo != " " && icone != " " && tipo != " " && numero != "" && nmrPtnAtaque.Value != "0" && nmrPtnDefesa.Value != "0" && descricao != "" && nome != " " && numero != " " && descricao != " " && (tipoMonstro != " " || tipoArmadilha != " " || tipoMagia != " "))
+            if (nome != "" && nmrNivel.Value != "0" && atributo != " " && icone != " " && tipo != " " && numero != "" && nmrPtnAtaque.Value != "0" && nmrPtnDefesa.Value != "0" && descricao != "" && nome != " " && numero != " " && descricao != " " && (tipoMonstro != " " || tipoArmadilha != " " || tipoMagia != " "))
             {
 
                 int nivel = Convert.ToInt32(nmrNivel.Value);
@@ -177,71 +177,83 @@ namespace YuGiOh
 
                 ma.Descricao = tipoMagia;
 
-                if (mo.Descricao != " " && mo.Descricao != null)
-                {
 
-                    if (ef.Descricao != " " && ef.Descricao != null)
+                CrtImagem img = new CrtImagem();
+
+                if (imgSelecionada.HasFile)
+                {
+                    var arquivo = imgSelecionada.PostedFile;
+                    string tipoImg = arquivo.ContentType;
+
+                    if (tipoImg.Contains("image/"))
                     {
 
-                        if (pe.Descricao != " " && pe.Descricao != null)
+                        string extensao = tipoImg.Replace("image/", "");
+
+                        var nomeArquivo = c.Nome + "." + extensao;
+                        var caminho = MapPath("~/upload") + "\\" + nomeArquivo;
+                        arquivo.SaveAs(caminho);
+
+                        img.Nome = caminho;
+
+                        //imgSelecionada.Src = "~/upload/" + nomeArquivo;
+
+                        if (mo.Descricao != " " && mo.Descricao != null)
                         {
-                            mensagem = Cartas.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe);
+
+                            if (ef.Descricao != " " && ef.Descricao != null)
+                            {
+
+                                if (pe.Descricao != " " && pe.Descricao != null)
+                                {
+                                    mensagem = Cartas.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe, img);
+                                    lblMensagem.InnerText = mensagem;
+                                }
+                                else
+                                {
+                                    mensagem = Cartas.CadastrarMonstroEfeito(c, at, i, ti, mo, ef, img);
+                                    lblMensagem.InnerText = mensagem;
+                                }
+
+                            }
+                            else
+                            {
+                                mensagem = Cartas.CadastrarMonstro(c, at, i, ti, mo, img);
+                                lblMensagem.InnerText = mensagem;
+                            }
+
+                        }
+
+                        else if (ar.Descricao != " " && ar.Descricao != null)
+                        {
+                            mensagem = Cartas.CadastrarArmadilha(c, at, i, ti, ar, img);
                             lblMensagem.InnerText = mensagem;
                         }
-                        else
+
+                        else if (ma.Descricao != " " && ma.Descricao != null)
                         {
-                            mensagem = Cartas.CadastrarMonstroEfeito(c, at, i, ti, mo, ef);
+
+                            mensagem = Cartas.CadastrarMagia(c, at, i, ti, ma, img);
                             lblMensagem.InnerText = mensagem;
+
                         }
+
 
                     }
                     else
                     {
-                        mensagem = Cartas.CadastrarMonstro(c, at, i, ti, mo);
-                        lblMensagem.InnerText = mensagem;
+
+                        lblMensagem.InnerText = "O arquivo selecionado não é uma imagem. Tente selicionar um arquivo tipo JPEG, JPG ou PNG";
+
                     }
-
-                }
-                //Fazer os ifs dos outros tipos
-
-
-
-                
-
 
                 }
                 else
                 {
                     lblMensagem.InnerText = "Você deixou campos em branco, preencha todos os campos!";
-                }*/
-
-            if (imgSelecionada.HasFile)
-            {
-                var arquivo = imgSelecionada.PostedFile;
-                string tipoImg = arquivo.ContentType;
-
-                if (tipoImg.Contains("image/"))
-                {
-
-                    string extensao = tipoImg.Replace("image/", "");
-
-                    //{[("'ID INVENTADO!!!!!!!'")]};
-                    int id = 333;
-
-                    string nomeArquivo = id + "." + extensao;
-                    var caminho = MapPath("~/upload") + "\\" + nomeArquivo;
-                    arquivo.SaveAs(caminho;
-
-                    //imgSelecionada.Src = "~/upload/" + nomeArquivo;
-                    lblMensagem.InnerText = "parece que deu certo";
-
                 }
-                else
-                {
 
-                    lblMensagem.InnerText = "O arquivo selecionado não é uma imagem. Tente selicionar um arquivo tipo JPEG, JPG ou PNG";
 
-                }
             }
         }
     }

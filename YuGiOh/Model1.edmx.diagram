@@ -21,8 +21,10 @@
         <AssociationConnector Association="YuGiOhDBModel.FK_CrtMonstro_MnstEfeito" />
         <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtMonstro" />
         <AssociationConnector Association="YuGiOhDBModel.FK_MnstEfeito_EfPendulo" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.Carta" Width="1.5" PointX="9.75" PointY="7.75" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.Carta" Width="1.5" PointX="9.75" PointY="7.625" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.CrtImagem" Width="1.5" PointX="7.5" PointY="14.75" />
         <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Atributo" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_CrtImagem" />
         <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Icone" />
         <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Tipo" />
       </Diagram>

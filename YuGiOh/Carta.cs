@@ -24,8 +24,10 @@ namespace YuGiOh
         public Nullable<int> AtributoId { get; set; }
         public Nullable<int> IconeId { get; set; }
         public int TipoId { get; set; }
+        public Nullable<int> ImagemId { get; set; }
     
         public virtual Atributo Atributo { get; set; }
+        public virtual CrtImagem CrtImagem { get; set; }
         public virtual Icone Icone { get; set; }
         public virtual Tipo Tipo { get; set; }
     }

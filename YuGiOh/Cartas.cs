@@ -7,21 +7,33 @@ namespace YuGiOh
 {
     public class Cartas
     {
-        internal static string CadastrarMonstro(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo)
+        internal static string CadastrarMonstroPendulo(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, MnstEfeito ef, EfPendulo pe, CrtImagem img)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static string CadastrarMonstroEfeito(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, MnstEfeito ef, CrtImagem img)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static string CadastrarMonstro(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, CrtImagem img)
         {
             string msn = null;
             try
             {
-                using(var ctx = new YuGiOhDBEntities())
+                using (var ctx = new YuGiOhDBEntities())
                 {
                     ctx.CrtMonstroes.Add(mo);
                     ctx.Atributoes.Add(at);
                     ctx.Icones.Add(i);
+                    ctx.CrtImagems.Add(img);
                     ctx.SaveChanges();
 
                     CrtMonstro monstro = ctx.CrtMonstroes.FirstOrDefault(x => x.Descricao == mo.Descricao);
                     Atributo atributo = ctx.Atributoes.FirstOrDefault(x => x.Descricao == at.Descricao);
                     Icone icone = ctx.Icones.FirstOrDefault(x => x.Descricao == i.Descricao);
+                    CrtImagem imagem = ctx.CrtImagems.FirstOrDefault(x => x.Nome == img.Nome);
 
                     ti.MonstroId = monstro.IdMonstro;
 
@@ -33,6 +45,7 @@ namespace YuGiOh
                     c.AtributoId = atributo.IdAtributo;
                     c.IconeId = icone.IdIcone;
                     c.TipoId = tipo.IdTipo;
+                    c.ImagemId = imagem.IdImagem;
 
                     ctx.Cartas.Add(c);
                     ctx.SaveChanges();
@@ -40,117 +53,21 @@ namespace YuGiOh
                     msn = "Carta cadastrada com sucesso";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 msn = "Algo deu errado!";
             }
             return msn;
         }
 
-        internal static string CadastrarMonstroEfeito(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, MnstEfeito ef)
+        internal static string CadastrarArmadilha(Carta c, Atributo at, Icone i, Tipo ti, CrtArmadilha ar, CrtImagem img)
         {
-            string msn = null;
-
-            try
-            {
-
-                using(var ctx = new YuGiOhDBEntities())
-                {
-                    ctx.MnstEfeitoes.Add(ef);
-                    ctx.Atributoes.Add(at);
-                    ctx.Icones.Add(i);
-                    ctx.SaveChanges();
-
-                    MnstEfeito efeito = ctx.MnstEfeitoes.FirstOrDefault(x => x.Descricao == ef.Descricao);
-                    Atributo atributo = ctx.Atributoes.FirstOrDefault(x => x.Descricao == at.Descricao);
-                    Icone icone = ctx.Icones.FirstOrDefault(x => x.Descricao == i.Descricao);
-
-                    mo.EfeitoId = efeito.IdEfeito;
-
-                    ctx.CrtMonstroes.Add(mo);
-                    ctx.SaveChanges();
-
-                    CrtMonstro monstro = ctx.CrtMonstroes.FirstOrDefault(x => x.Descricao == mo.Descricao);
-
-                    ti.MonstroId = monstro.IdMonstro;
-
-                    ctx.Tipoes.Add(ti);
-                    ctx.SaveChanges();
-
-                    Tipo tipo = ctx.Tipoes.FirstOrDefault(x => x.Descricao == ti.Descricao);
-
-                    c.AtributoId = atributo.IdAtributo;
-                    c.IconeId = icone.IdIcone;
-                    c.TipoId = tipo.IdTipo;
-
-                    ctx.Cartas.Add(c);
-                    ctx.SaveChanges();
-
-                    msn = "Carta cadastrada com sucesso";
-                }
-
-            }catch(Exception ex)
-            {
-                msn = "Algo deu errado!";
-            }
-
-            return msn;
+            throw new NotImplementedException();
         }
 
-        internal static string CadastrarMonstroPendulo(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, MnstEfeito ef, EfPendulo pe)
+        internal static string CadastrarMagia(Carta c, Atributo at, Icone i, Tipo ti, CrtMagia ma, CrtImagem img)
         {
-            string msn = null;
-
-            try
-            {
-
-                using(var ctx = new YuGiOhDBEntities())
-                {
-                    ctx.EfPenduloes.Add(pe);
-                    ctx.Atributoes.Add(at);
-                    ctx.Icones.Add(i);
-                    ctx.SaveChanges();
-
-                    EfPendulo pendulo = ctx.EfPenduloes.FirstOrDefault(x => x.Descricao == pe.Descricao);
-                    Atributo atributo = ctx.Atributoes.FirstOrDefault(x => x.Descricao == at.Descricao);
-                    Icone icone = ctx.Icones.FirstOrDefault(x => x.Descricao == i.Descricao);
-
-                    ef.PenduloId = pe.IdPendulo;
-
-                    ctx.MnstEfeitoes.Add(ef);
-                    ctx.SaveChanges();
-
-                    MnstEfeito efeito = ctx.MnstEfeitoes.FirstOrDefault(x => x.Descricao == ef.Descricao);   
-                    
-                    mo.EfeitoId = efeito.IdEfeito;
-
-                    ctx.CrtMonstroes.Add(mo);
-                    ctx.SaveChanges();
-
-                    CrtMonstro monstro = ctx.CrtMonstroes.FirstOrDefault(x => x.Descricao == mo.Descricao);
-
-                    ti.MonstroId = monstro.IdMonstro;
-
-                    ctx.Tipoes.Add(ti);
-                    ctx.SaveChanges();
-
-                    Tipo tipo = ctx.Tipoes.FirstOrDefault(x => x.Descricao == ti.Descricao);
-
-                    c.AtributoId = atributo.IdAtributo;
-                    c.IconeId = icone.IdIcone;
-                    c.TipoId = tipo.IdTipo;
-
-                    ctx.Cartas.Add(c);
-                    ctx.SaveChanges();
-
-                    msn = "Carta cadastrada com sucesso";
-                }
-
-            }catch(Exception ex)
-            {
-                msn = "Algo deu errado!";
-            }
-            return msn;
+            throw new NotImplementedException();
         }
     }
 }

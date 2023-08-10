@@ -26,6 +26,7 @@
           <Property Name="AtributoId" Type="int" />
           <Property Name="IconeId" Type="int" />
           <Property Name="TipoId" Type="int" Nullable="false" />
+          <Property Name="ImagemId" Type="int" />
         </EntityType>
         <EntityType Name="CrtArmadilha">
           <Key>
@@ -33,6 +34,13 @@
           </Key>
           <Property Name="IdArmadilha" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Descricao" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CrtImagem">
+          <Key>
+            <PropertyRef Name="IdImagem" />
+          </Key>
+          <Property Name="IdImagem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CrtMagia">
           <Key>
@@ -110,6 +118,18 @@
             </Principal>
             <Dependent Role="Carta">
               <PropertyRef Name="AtributoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_CrtImagem">
+          <End Role="CrtImagem" Type="Self.CrtImagem" Multiplicity="0..1" />
+          <End Role="Carta" Type="Self.Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtImagem">
+              <PropertyRef Name="IdImagem" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="ImagemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -213,6 +233,7 @@
           <EntitySet Name="Atributo" EntityType="Self.Atributo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Carta" EntityType="Self.Carta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CrtArmadilha" EntityType="Self.CrtArmadilha" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CrtImagem" EntityType="Self.CrtImagem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CrtMagia" EntityType="Self.CrtMagia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CrtMonstro" EntityType="Self.CrtMonstro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EfPendulo" EntityType="Self.EfPendulo" Schema="dbo" store:Type="Tables" />
@@ -223,6 +244,10 @@
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Carta_Atributo" Association="Self.FK_Carta_Atributo">
             <End Role="Atributo" EntitySet="Atributo" />
+            <End Role="Carta" EntitySet="Carta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_CrtImagem" Association="Self.FK_Carta_CrtImagem">
+            <End Role="CrtImagem" EntitySet="CrtImagem" />
             <End Role="Carta" EntitySet="Carta" />
           </AssociationSet>
           <AssociationSet Name="FK_Carta_Icone" Association="Self.FK_Carta_Icone">
@@ -298,8 +323,13 @@
             <End Role="MnstEfeito" EntitySet="MnstEfeitoes" />
           </AssociationSet>
           <EntitySet Name="Cartas" EntityType="YuGiOhDBModel.Carta" />
+          <EntitySet Name="CrtImagems" EntityType="YuGiOhDBModel.CrtImagem" />
           <AssociationSet Name="FK_Carta_Atributo" Association="YuGiOhDBModel.FK_Carta_Atributo">
             <End Role="Atributo" EntitySet="Atributoes" />
+            <End Role="Carta" EntitySet="Cartas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carta_CrtImagem" Association="YuGiOhDBModel.FK_Carta_CrtImagem">
+            <End Role="CrtImagem" EntitySet="CrtImagems" />
             <End Role="Carta" EntitySet="Cartas" />
           </AssociationSet>
           <AssociationSet Name="FK_Carta_Icone" Association="YuGiOhDBModel.FK_Carta_Icone">
@@ -310,7 +340,7 @@
             <End Role="Tipo" EntitySet="Tipoes" />
             <End Role="Carta" EntitySet="Cartas" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -493,9 +523,19 @@
           <Property Name="AtributoId" Type="Int32" />
           <Property Name="IconeId" Type="Int32" />
           <Property Name="TipoId" Type="Int32" Nullable="false" />
+          <Property Name="ImagemId" Type="Int32" />
           <NavigationProperty Name="Atributo" Relationship="YuGiOhDBModel.FK_Carta_Atributo" FromRole="Carta" ToRole="Atributo" />
+          <NavigationProperty Name="CrtImagem" Relationship="YuGiOhDBModel.FK_Carta_CrtImagem" FromRole="Carta" ToRole="CrtImagem" />
           <NavigationProperty Name="Icone" Relationship="YuGiOhDBModel.FK_Carta_Icone" FromRole="Carta" ToRole="Icone" />
           <NavigationProperty Name="Tipo" Relationship="YuGiOhDBModel.FK_Carta_Tipo" FromRole="Carta" ToRole="Tipo" />
+        </EntityType>
+        <EntityType Name="CrtImagem">
+          <Key>
+            <PropertyRef Name="IdImagem" />
+          </Key>
+          <Property Name="IdImagem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cartas" Relationship="YuGiOhDBModel.FK_Carta_CrtImagem" FromRole="CrtImagem" ToRole="Carta" />
         </EntityType>
         <Association Name="FK_Carta_Atributo">
           <End Type="YuGiOhDBModel.Atributo" Role="Atributo" Multiplicity="0..1" />
@@ -506,6 +546,18 @@
             </Principal>
             <Dependent Role="Carta">
               <PropertyRef Name="AtributoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carta_CrtImagem">
+          <End Type="YuGiOhDBModel.CrtImagem" Role="CrtImagem" Multiplicity="0..1" />
+          <End Type="YuGiOhDBModel.Carta" Role="Carta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CrtImagem">
+              <PropertyRef Name="IdImagem" />
+            </Principal>
+            <Dependent Role="Carta">
+              <PropertyRef Name="ImagemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -533,7 +585,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -633,6 +685,7 @@
           <EntitySetMapping Name="Cartas">
             <EntityTypeMapping TypeName="YuGiOhDBModel.Carta">
               <MappingFragment StoreEntitySet="Carta">
+                <ScalarProperty Name="ImagemId" ColumnName="ImagemId" />
                 <ScalarProperty Name="TipoId" ColumnName="TipoId" />
                 <ScalarProperty Name="IconeId" ColumnName="IconeId" />
                 <ScalarProperty Name="AtributoId" ColumnName="AtributoId" />
@@ -643,6 +696,14 @@
                 <ScalarProperty Name="Nivel" ColumnName="Nivel" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="IdCarta" ColumnName="IdCarta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrtImagems">
+            <EntityTypeMapping TypeName="YuGiOhDBModel.CrtImagem">
+              <MappingFragment StoreEntitySet="CrtImagem">
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="IdImagem" ColumnName="IdImagem" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
