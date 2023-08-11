@@ -5,7 +5,7 @@ using System.Web;
 
 namespace YuGiOh
 {
-    public class Cartas
+    public class CartasDAO
     {
         internal static string CadastrarMonstroPendulo(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, MnstEfeito ef, EfPendulo pe, CrtImagem img)
         {
@@ -65,6 +65,28 @@ namespace YuGiOh
                 msn = "Algo deu errado!";
             }
             return msn;
+        }
+
+       
+
+        internal static List<Carta> ListarCartas()
+        {
+            List<Carta> lista = null;
+
+            try
+            {
+                using(var ctx = new YuGiOhDBEntities())
+                {
+                    lista = ctx.Cartas.OrderBy(ordenar => ordenar.Nome).ToList();
+                }
+
+
+            }catch(Exception ex)
+            {
+
+            }
+
+            return lista;
         }
 
         internal static string CadastrarMonstroEfeito(Carta c, Atributo at, Icone i, Tipo ti, CrtMonstro mo, MnstEfeito ef, CrtImagem img)
@@ -248,6 +270,226 @@ namespace YuGiOh
                 msn = "Algo deu errado!";
             }
             return msn;
+        }
+
+        internal static Carta Excluir(int id)
+        {
+            Carta carta = null;
+            
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+                    carta = ctx.Cartas.FirstOrDefault(x => x.IdCarta == id);
+
+                    ctx.Cartas.Remove(carta);
+                    ctx.SaveChanges();
+                }
+
+            }catch(Exception ex)
+            {
+
+            }
+
+            return carta;
+        }
+
+        internal static Carta SelecionarCarta(int id)
+        {
+            Carta carta = null;
+            try
+            {
+
+                using(var ctx = new YuGiOhDBEntities())
+                {
+                    carta = ctx.Cartas.FirstOrDefault(x => x.IdCarta == id);
+                }
+
+            }catch(Exception ex)
+            {
+
+            }
+
+            return carta;
+        }
+
+        internal static Tipo SelecionarTipo(Carta c)
+        {
+            Tipo tipo = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    tipo = ctx.Tipoes.FirstOrDefault(x => x.IdTipo == c.TipoId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return tipo;
+        }
+
+        internal static Atributo SelecionarAtributo(Carta c)
+        {
+            Atributo atributo = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    atributo = ctx.Atributoes.FirstOrDefault(x => x.IdAtributo == c.AtributoId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return atributo;
+        }
+
+       
+
+        internal static CrtMonstro SelecionarMonstro(Tipo ti)
+        {
+            CrtMonstro monstro = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    monstro = ctx.CrtMonstroes.FirstOrDefault(x => x.IdMonstro == ti.MonstroId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return monstro;
+        }
+
+        internal static CrtArmadilha SelecionarArmadilha(Tipo ti)
+        {
+            CrtArmadilha armadilha = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    armadilha = ctx.CrtArmadilhas.FirstOrDefault(x => x.IdArmadilha == ti.ArmadilhaId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return armadilha;
+        }
+
+        internal static CrtMagia SelecionarMagia(Tipo ti)
+        {
+            CrtMagia magia = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    magia = ctx.CrtMagias.FirstOrDefault(x => x.IdMagia == ti.MagiaId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return magia;
+        }
+
+        internal static Icone SelecionarIcone(Carta c)
+        {
+            Icone icone = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    icone = ctx.Icones.FirstOrDefault(x => x.IdIcone == c.IconeId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return icone;
+        }
+
+        internal static MnstEfeito SelecionarMonstroEfeito(CrtMonstro mo)
+        {
+            MnstEfeito efeito = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    efeito = ctx.MnstEfeitoes.FirstOrDefault(x => x.IdEfeito == mo.EfeitoId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return efeito;
+        }
+
+        internal static EfPendulo SelecionarMonstroPendulo(MnstEfeito ef)
+        {
+            EfPendulo pendulo = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    pendulo = ctx.EfPenduloes.FirstOrDefault(x => x.IdPendulo == ef.PenduloId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return pendulo;
         }
     }
 }

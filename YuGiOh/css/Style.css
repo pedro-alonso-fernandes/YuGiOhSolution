@@ -1,0 +1,116 @@
+﻿body {
+    transition: background 1s;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: dimgray;
+}
+
+    a:hover {
+        color: darkgray;
+    }
+
+h1 {
+    color: dimgray;
+    text-align: center;
+}
+
+table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.botaoTable {
+    max-width: 2em;
+    justify-content: center;
+}
+
+.imagem {
+    max-width: 15em;
+    justify-content: center;
+}
+
+.fieldImg {
+    max-width: 10em;
+    margin: 0 auto;
+}
+
+
+fieldset {
+    color: dimgray;
+    text-align: center;
+}
+
+.kkkk {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.botao {
+    position: relative;
+    width: 100px;
+    height: 40px;
+    border-radius: 25px;
+    box-shadow: 0 0 2.5px 0 #39a2db59;
+    cursor: pointer;
+    background-color: #ffffff;
+    float: right;
+}
+
+
+
+.bola {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 100%;
+    border-radius: 50%;
+    background-color: gold;
+    transition: left 1s;
+}
+
+.bola-movendo {
+    left: calc(100% - 40px);
+    background-color: dimgray;
+}
+
+.escuro {
+    background-color: black;
+}
+
+.navbar {
+    background-color: transparent;
+    color: dimgray;
+    overflow: hidden;
+    padding: 1em;
+    text-align: center;
+}
+
+.nav-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+    .nav-list li {
+        float: left;
+    }
+
+        .nav-list li a {
+            display: block;
+            color: dimgray;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: x-large;
+        }
+
+            .nav-list li a:hover {
+                color: lightgrey;
+            }

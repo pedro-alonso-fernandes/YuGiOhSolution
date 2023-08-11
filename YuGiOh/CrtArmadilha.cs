@@ -22,6 +22,7 @@ namespace YuGiOh
     
         public int IdArmadilha { get; set; }
         public string Descricao { get; set; }
+        public Nullable<int> Index { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tipo> Tipoes { get; set; }

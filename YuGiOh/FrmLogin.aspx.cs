@@ -55,7 +55,7 @@ namespace YuGiOh
                 }
                 else
                 {
-                    lblMensagem.InnerText = "O login informado não existe. Tente Cadastrá-lo no link acima";
+                    lblMensagem.InnerText = "O login informado não existe. Tente Cadastrá-lo no link abaixo";
                 }
             }
             else

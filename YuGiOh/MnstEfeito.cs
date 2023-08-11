@@ -22,6 +22,7 @@ namespace YuGiOh
     
         public int IdEfeito { get; set; }
         public string Descricao { get; set; }
+        public Nullable<int> Index { get; set; }
         public Nullable<int> PenduloId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

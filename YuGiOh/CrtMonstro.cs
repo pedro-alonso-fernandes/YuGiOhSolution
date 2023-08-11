@@ -22,6 +22,7 @@ namespace YuGiOh
     
         public int IdMonstro { get; set; }
         public string Descricao { get; set; }
+        public Nullable<int> Index { get; set; }
         public Nullable<int> EfeitoId { get; set; }
     
         public virtual MnstEfeito MnstEfeito { get; set; }

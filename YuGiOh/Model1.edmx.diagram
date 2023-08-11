@@ -8,25 +8,25 @@
         <EntityTypeShape EntityType="YuGiOhDBModel.Usuario" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="YuGiOhDBModel.LogAcesso" Width="1.5" PointX="5.625" PointY="1" />
         <AssociationConnector Association="YuGiOhDBModel.FK_LogAcesso_Usuario" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.Atributo" Width="1.5" PointX="7.5" PointY="9.75" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.CrtArmadilha" Width="1.5" PointX="5.25" PointY="11.125" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.CrtMagia" Width="1.5" PointX="5.25" PointY="8.75" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.CrtMonstro" Width="1.5" PointX="5.25" PointY="5.75" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.EfPendulo" Width="1.5" PointX="0.75" PointY="6" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.Icone" Width="1.5" PointX="7.5" PointY="12.125" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.MnstEfeito" Width="1.5" PointX="3" PointY="5.75" />
-        <EntityTypeShape EntityType="YuGiOhDBModel.Tipo" Width="1.5" PointX="7.5" PointY="5.375" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtArmadilha" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtMagia" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_CrtMonstro_MnstEfeito" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtMonstro" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_MnstEfeito_EfPendulo" />
         <EntityTypeShape EntityType="YuGiOhDBModel.Carta" Width="1.5" PointX="9.75" PointY="7.625" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Atributo" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Icone" />
-        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Tipo" />
         <EntityTypeShape EntityType="YuGiOhDBModel.CrtImagem" Width="1.5" PointX="10" PointY="2.75" />
         <AssociationConnector Association="YuGiOhDBModel.FK_Carta_CrtImagem" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.Atributo" Width="1.5" PointX="8.75" PointY="16.375" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.CrtArmadilha" Width="1.5" PointX="6.5" PointY="10.875" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.CrtMagia" Width="1.5" PointX="6.5" PointY="13.375" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.CrtMonstro" Width="1.5" PointX="6.5" PointY="16" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.EfPendulo" Width="1.5" PointX="2" PointY="16.125" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.Icone" Width="1.5" PointX="1.625" PointY="7.625" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.MnstEfeito" Width="1.5" PointX="4.25" PointY="16" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Atributo" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Icone" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_CrtMonstro_MnstEfeito" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_MnstEfeito_EfPendulo" />
+        <EntityTypeShape EntityType="YuGiOhDBModel.Tipo" Width="1.5" PointX="11.75" PointY="13" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Carta_Tipo" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtArmadilha" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtMagia" />
+        <AssociationConnector Association="YuGiOhDBModel.FK_Tipo_CrtMonstro" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
