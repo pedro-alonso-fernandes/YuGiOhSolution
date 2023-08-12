@@ -67,7 +67,7 @@ namespace YuGiOh
             return msn;
         }
 
-       
+
 
         internal static List<Carta> ListarCartas()
         {
@@ -75,13 +75,14 @@ namespace YuGiOh
 
             try
             {
-                using(var ctx = new YuGiOhDBEntities())
+                using (var ctx = new YuGiOhDBEntities())
                 {
                     lista = ctx.Cartas.OrderBy(ordenar => ordenar.Nome).ToList();
                 }
 
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
 
             }
@@ -275,7 +276,19 @@ namespace YuGiOh
         internal static Carta Excluir(int id)
         {
             Carta carta = null;
-            
+
+            Tipo tipo = null;
+            Atributo atributo = null;
+            Icone icone = null;
+            CrtImagem imagem = null;
+
+            CrtMonstro monstro = null;
+            CrtArmadilha armadilha = null;
+            CrtMagia magia = null;
+
+            MnstEfeito efeito = null;
+            EfPendulo pendulo = null;
+
             try
             {
 
@@ -283,11 +296,92 @@ namespace YuGiOh
                 {
                     carta = ctx.Cartas.FirstOrDefault(x => x.IdCarta == id);
 
+                    tipo = ctx.Tipoes.FirstOrDefault(x => x.IdTipo == carta.TipoId);
+                    atributo = ctx.Atributoes.FirstOrDefault(x => x.IdAtributo == carta.AtributoId);
+                    icone = ctx.Icones.FirstOrDefault(x => x.IdIcone == carta.IconeId);
+                    imagem = ctx.CrtImagems.FirstOrDefault(x => x.IdImagem == carta.ImagemId);
+
+                    if (tipo.Descricao.Contains("Monstro"))
+                    {
+                        monstro = ctx.CrtMonstroes.FirstOrDefault(x => x.IdMonstro == tipo.MonstroId);
+
+                        if (monstro.EfeitoId != null)
+                        {
+                            efeito = ctx.MnstEfeitoes.FirstOrDefault(x => x.IdEfeito == monstro.EfeitoId);
+
+                            if (efeito.PenduloId != null)
+                            {
+                                pendulo = ctx.EfPenduloes.FirstOrDefault(x => x.IdPendulo == efeito.PenduloId);
+                            }
+                        }
+                    }
+                    else if (tipo.Descricao.Contains("Armadilha"))
+                    {
+                        armadilha = ctx.CrtArmadilhas.FirstOrDefault(x => x.IdArmadilha == tipo.ArmadilhaId);
+                    }
+                    else if (tipo.Descricao.Contains("Armadilha"))
+                    {
+                        magia = ctx.CrtMagias.FirstOrDefault(x => x.IdMagia == tipo.MagiaId);
+                    }
+
+
                     ctx.Cartas.Remove(carta);
                     ctx.SaveChanges();
+
+                    ctx.Tipoes.Remove(tipo);
+                    ctx.SaveChanges();
+                    ctx.Atributoes.Remove(atributo);
+                    ctx.SaveChanges();
+                    ctx.Icones.Remove(icone);
+                    ctx.SaveChanges();
+                    ctx.CrtImagems.Remove(imagem);
+                    ctx.SaveChanges();
+
+                    if (tipo.Descricao.Contains("Monstro"))
+                    {
+                        if (monstro.EfeitoId != null)
+                        {
+
+                            if (efeito.PenduloId != null)
+                            {
+                                ctx.CrtMonstroes.Remove(monstro);
+                                ctx.SaveChanges();
+                                ctx.MnstEfeitoes.Remove(efeito);
+                                ctx.SaveChanges();
+                                ctx.EfPenduloes.Remove(pendulo);
+                                ctx.SaveChanges();
+                            }
+                            else
+                            {
+                                ctx.CrtMonstroes.Remove(monstro);
+                                ctx.SaveChanges();
+                                ctx.MnstEfeitoes.Remove(efeito);
+                                ctx.SaveChanges();
+                            }
+
+                        }
+                        else
+                        {
+                            ctx.CrtMonstroes.Remove(monstro);
+                            ctx.SaveChanges();
+                        }
+
+                    }
+                    else if (tipo.Descricao.Contains("Armadilha"))
+                    {
+                        ctx.CrtArmadilhas.Remove(armadilha);
+                    }
+                    else if (tipo.Descricao.Contains("Armadilha"))
+                    {
+                        ctx.CrtMagias.Remove(magia);
+                    }
+
+
+                    //ctx.SaveChanges();
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
 
             }
@@ -301,12 +395,13 @@ namespace YuGiOh
             try
             {
 
-                using(var ctx = new YuGiOhDBEntities())
+                using (var ctx = new YuGiOhDBEntities())
                 {
                     carta = ctx.Cartas.FirstOrDefault(x => x.IdCarta == id);
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
 
             }
@@ -358,7 +453,7 @@ namespace YuGiOh
             return atributo;
         }
 
-       
+
 
         internal static CrtMonstro SelecionarMonstro(Tipo ti)
         {
@@ -402,6 +497,28 @@ namespace YuGiOh
             }
 
             return armadilha;
+        }
+
+        internal static CrtImagem SelecionarImagem(Carta c)
+        {
+            CrtImagem imagem = null;
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    imagem = ctx.CrtImagems.FirstOrDefault(x => x.IdImagem == c.ImagemId);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return imagem;
         }
 
         internal static CrtMagia SelecionarMagia(Tipo ti)
@@ -490,6 +607,662 @@ namespace YuGiOh
             }
 
             return pendulo;
+        }
+
+
+
+        internal static string AlterarMonstroNovo(Carta c, Carta carta, Atributo at, Icone ic, Tipo tipo, CrtMonstro monstro, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    ctx.CrtMonstroes.Add(monstro);
+                    ctx.SaveChanges();
+
+                    CrtMonstro mo = ctx.CrtMonstroes.OrderByDescending(x => x.IdMonstro).FirstOrDefault(x => x.Descricao == monstro.Descricao);
+                    tipo.MonstroId = mo.IdMonstro;
+
+                    ctx.Tipoes.Add(tipo);
+                    ctx.SaveChanges();
+
+                    Tipo t = ctx.Tipoes.OrderByDescending(x => x.IdTipo).FirstOrDefault(x => x.Descricao == tipo.Descricao);
+
+                    carta.AtributoId = atributoAntigo.IdAtributo;
+                    carta.IconeId = iconeAntigo.IdIcone;
+                    carta.ImagemId = imagemAntigo.IdImagem;
+                    carta.TipoId = t.IdTipo;
+
+                    ctx.Cartas.Add(carta);
+                    ctx.SaveChanges();
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+
+
+                    if (tipoAntigo.Descricao.Contains("Armadilha"))
+                    {
+
+                        CrtArmadilha armadilha = SelecionarArmadilha(tipoAntigo);
+
+                        ctx.CrtArmadilhas.Attach(armadilha);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtArmadilhas.Remove(armadilha);
+                    }
+                    else if (tipoAntigo.Descricao.Contains("Magia"))
+                    {
+                        CrtMagia magia = SelecionarMagia(tipoAntigo);
+
+                        ctx.CrtMagias.Attach(magia);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtMagias.Remove(magia);
+                    }
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarMonstroPenduloNovo(Carta c, Carta carta, Atributo at, Icone ic, Tipo tipo, CrtMonstro monstro, MnstEfeito efeito, EfPendulo pendulo, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    ctx.EfPenduloes.Add(pendulo);
+                    ctx.SaveChanges();
+
+                    EfPendulo pe = ctx.EfPenduloes.OrderByDescending(x => x.IdPendulo).FirstOrDefault(x => x.Descricao == pendulo.Descricao);
+                    efeito.PenduloId = pe.IdPendulo;
+
+                    ctx.MnstEfeitoes.Add(efeito);
+                    ctx.SaveChanges();
+
+                    MnstEfeito ef = ctx.MnstEfeitoes.OrderByDescending(x => x.IdEfeito).FirstOrDefault(x => x.Descricao == efeito.Descricao);
+                    monstro.EfeitoId = ef.IdEfeito;
+
+
+                    ctx.CrtMonstroes.Add(monstro);
+                    ctx.SaveChanges();
+
+                    CrtMonstro mo = ctx.CrtMonstroes.OrderByDescending(x => x.IdMonstro).FirstOrDefault(x => x.Descricao == monstro.Descricao);
+                    tipo.MonstroId = mo.IdMonstro;
+
+                    ctx.Tipoes.Add(tipo);
+                    ctx.SaveChanges();
+
+                    Tipo t = ctx.Tipoes.OrderByDescending(x => x.IdTipo).FirstOrDefault(x => x.Descricao == tipo.Descricao);
+
+                    carta.AtributoId = atributoAntigo.IdAtributo;
+                    carta.IconeId = iconeAntigo.IdIcone;
+                    carta.ImagemId = imagemAntigo.IdImagem;
+                    carta.TipoId = t.IdTipo;
+
+                    ctx.Cartas.Add(carta);
+                    ctx.SaveChanges();
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+
+
+                    if (tipoAntigo.Descricao.Contains("Armadilha"))
+                    {
+
+                        CrtArmadilha armadilha = SelecionarArmadilha(tipoAntigo);
+
+                        ctx.CrtArmadilhas.Attach(armadilha);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtArmadilhas.Remove(armadilha);
+                    }
+                    else if (tipoAntigo.Descricao.Contains("Magia"))
+                    {
+                        CrtMagia magia = SelecionarMagia(tipoAntigo);
+
+                        ctx.CrtMagias.Attach(magia);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtMagias.Remove(magia);
+                    }
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarMonstro(Carta c, Atributo at, Icone ic, Tipo ti, CrtMonstro mo, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+                    Carta cartaAntigo = SelecionarCarta(c.IdCarta);
+                    
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    CrtMonstro monstroAntigo = SelecionarMonstro(ti);
+
+                    cartaAntigo.Nome = c.Nome;
+                    cartaAntigo.Nivel = c.Nivel;
+                    cartaAntigo.Numero = c.Numero;
+                    cartaAntigo.PtnAtaque = c.PtnAtaque;
+                    cartaAntigo.PtnDefesa = c.PtnDefesa;
+                    cartaAntigo.Descricao = c.Descricao;
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    tipoAntigo.Descricao = ti.Descricao;
+                    tipoAntigo.Index = ti.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+                    monstroAntigo.Descricao = mo.Descricao;
+                    monstroAntigo.Index = mo.Index;
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarMonstroPendulo(Carta c, Atributo at, Icone ic, Tipo ti, CrtMonstro mo, MnstEfeito efeito, EfPendulo pendulo, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+                    Carta cartaAntigo = SelecionarCarta(c.IdCarta);
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    CrtMonstro monstroAntigo = SelecionarMonstro(ti);
+
+                    ctx.EfPenduloes.Add(pendulo);
+                    ctx.SaveChanges();
+
+                    EfPendulo pe = ctx.EfPenduloes.OrderByDescending(x => x.IdPendulo).FirstOrDefault(x => x.Descricao == pendulo.Descricao);
+                    efeito.PenduloId = pe.IdPendulo;
+
+                    ctx.MnstEfeitoes.Add(efeito);
+                    ctx.SaveChanges();
+
+                    MnstEfeito ef = ctx.MnstEfeitoes.OrderByDescending(x => x.IdEfeito).FirstOrDefault(x => x.Descricao == efeito.Descricao);
+
+                    cartaAntigo.Nome = c.Nome;
+                    cartaAntigo.Nivel = c.Nivel;
+                    cartaAntigo.Numero = c.Numero;
+                    cartaAntigo.PtnAtaque = c.PtnAtaque;
+                    cartaAntigo.PtnDefesa = c.PtnDefesa;
+                    cartaAntigo.Descricao = c.Descricao;
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    tipoAntigo.Descricao = ti.Descricao;
+                    tipoAntigo.Index = ti.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+                    monstroAntigo.Descricao = mo.Descricao;
+                    monstroAntigo.Index = mo.Index;
+                    monstroAntigo.EfeitoId = ef.IdEfeito;
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarMonstroEfeito(Carta c, Atributo at, Icone ic, Tipo ti, CrtMonstro mo, MnstEfeito efeito, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+                    Carta cartaAntigo = SelecionarCarta(c.IdCarta);
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    CrtMonstro monstroAntigo = SelecionarMonstro(ti);
+
+                    ctx.MnstEfeitoes.Add(efeito);
+                    ctx.SaveChanges();
+
+                    MnstEfeito ef = ctx.MnstEfeitoes.OrderByDescending(x => x.IdEfeito).FirstOrDefault(x => x.Descricao == efeito.Descricao);
+
+                    cartaAntigo.Nome = c.Nome;
+                    cartaAntigo.Nivel = c.Nivel;
+                    cartaAntigo.Numero = c.Numero;
+                    cartaAntigo.PtnAtaque = c.PtnAtaque;
+                    cartaAntigo.PtnDefesa = c.PtnDefesa;
+                    cartaAntigo.Descricao = c.Descricao;
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    tipoAntigo.Descricao = ti.Descricao;
+                    tipoAntigo.Index = ti.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+                    monstroAntigo.Descricao = mo.Descricao;
+                    monstroAntigo.Index = mo.Index;
+                    monstroAntigo.EfeitoId = ef.IdEfeito;
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarMagiaNovo(Carta c, Carta carta, Atributo at, Icone ic, Tipo tipo, CrtMagia magia, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    ctx.CrtMagias.Add(magia);
+                    ctx.SaveChanges();
+
+                    CrtMagia ma = ctx.CrtMagias.OrderByDescending(x => x.IdMagia).FirstOrDefault(x => x.Descricao == magia.Descricao);
+                    tipo.MagiaId = ma.IdMagia;
+
+                    ctx.Tipoes.Add(tipo);
+                    ctx.SaveChanges();
+
+                    Tipo t = ctx.Tipoes.OrderByDescending(x => x.IdTipo).FirstOrDefault(x => x.Descricao == tipo.Descricao);
+
+                    carta.AtributoId = atributoAntigo.IdAtributo;
+                    carta.IconeId = iconeAntigo.IdIcone;
+                    carta.ImagemId = imagemAntigo.IdImagem;
+                    carta.TipoId = t.IdTipo;
+
+                    ctx.Cartas.Add(carta);
+                    ctx.SaveChanges();
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+
+
+                    if (tipoAntigo.Descricao.Contains("Monstro"))
+                    {
+
+                        CrtMonstro monstro = SelecionarMonstro(tipoAntigo);
+
+                        ctx.CrtMonstroes.Attach(monstro);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtMonstroes.Remove(monstro);
+
+                        if (monstro.EfeitoId != null)
+                        {
+                            MnstEfeito ef = SelecionarMonstroEfeito(monstro);
+
+                            ctx.MnstEfeitoes.Attach(ef);
+                            ctx.MnstEfeitoes.Remove(ef);
+
+                            if (ef.PenduloId != null)
+                            {
+                                EfPendulo pe = SelecionarMonstroPendulo(ef);
+                                ctx.EfPenduloes.Attach(pe);
+                                ctx.EfPenduloes.Remove(pe);
+                            }
+                        }
+
+
+
+                    }
+                    else if (tipoAntigo.Descricao.Contains("Armadilha"))
+                    {
+
+                        CrtArmadilha armadilha = SelecionarArmadilha(tipoAntigo);
+
+                        ctx.CrtArmadilhas.Attach(armadilha);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtArmadilhas.Remove(armadilha);
+                    }
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarArmadilhaNovo(Carta c, Carta carta, Atributo at, Icone ic, Tipo tipo, CrtArmadilha armadilha, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    ctx.CrtArmadilhas.Add(armadilha);
+                    ctx.SaveChanges();
+
+                    CrtArmadilha ar = ctx.CrtArmadilhas.OrderByDescending(x => x.IdArmadilha).FirstOrDefault(x => x.Descricao == armadilha.Descricao);
+                    tipo.ArmadilhaId = ar.IdArmadilha;
+
+                    ctx.Tipoes.Add(tipo);
+                    ctx.SaveChanges();
+
+                    Tipo t = ctx.Tipoes.OrderByDescending(x => x.IdTipo).FirstOrDefault(x => x.Descricao == tipo.Descricao);
+
+                    carta.AtributoId = atributoAntigo.IdAtributo;
+                    carta.IconeId = iconeAntigo.IdIcone;
+                    carta.ImagemId = imagemAntigo.IdImagem;
+                    carta.TipoId = t.IdTipo;
+
+                    ctx.Cartas.Add(carta);
+                    ctx.SaveChanges();
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+
+
+                    if (tipoAntigo.Descricao.Contains("Monstro"))
+                    {
+
+                        CrtMonstro monstro = SelecionarMonstro(tipoAntigo);
+
+                        ctx.CrtMonstroes.Attach(monstro);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtMonstroes.Remove(monstro);
+
+                        if (monstro.EfeitoId != null)
+                        {
+                            MnstEfeito ef = SelecionarMonstroEfeito(monstro);
+
+                            ctx.MnstEfeitoes.Attach(ef);
+                            ctx.MnstEfeitoes.Remove(ef);
+
+                            if(ef.PenduloId != null)
+                            {
+                                EfPendulo pe = SelecionarMonstroPendulo(ef);
+                                ctx.EfPenduloes.Attach(pe);
+                                ctx.EfPenduloes.Remove(pe);
+                            }
+                        }
+
+
+
+                    }
+                    else if (tipoAntigo.Descricao.Contains("Magia"))
+                    {
+                        CrtMagia magia = SelecionarMagia(tipoAntigo);
+
+                        ctx.CrtMagias.Attach(magia);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtMagias.Remove(magia);
+                    }
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
+        }
+
+        internal static string AlterarMonstroEfeitoNovo(Carta c, Carta carta, Atributo at, Icone ic, Tipo tipo, CrtMonstro monstro, MnstEfeito efeito, CrtImagem img)
+        {
+            string msn = "";
+            try
+            {
+
+                using (var ctx = new YuGiOhDBEntities())
+                {
+
+                    Atributo atributoAntigo = SelecionarAtributo(c);
+                    Icone iconeAntigo = SelecionarIcone(c);
+                    Tipo tipoAntigo = SelecionarTipo(c);
+                    CrtImagem imagemAntigo = SelecionarImagem(c);
+
+                    ctx.MnstEfeitoes.Add(efeito);
+                    ctx.SaveChanges();
+
+                    MnstEfeito ef = ctx.MnstEfeitoes.OrderByDescending(x => x.IdEfeito).FirstOrDefault(x => x.Descricao == efeito.Descricao);
+                    monstro.EfeitoId = ef.IdEfeito;
+
+
+                    ctx.CrtMonstroes.Add(monstro);
+                    ctx.SaveChanges();
+
+                    CrtMonstro mo = ctx.CrtMonstroes.OrderByDescending(x => x.IdMonstro).FirstOrDefault(x => x.Descricao == monstro.Descricao);
+                    tipo.MonstroId = mo.IdMonstro;
+
+                    ctx.Tipoes.Add(tipo);
+                    ctx.SaveChanges();
+
+                    Tipo t = ctx.Tipoes.OrderByDescending(x => x.IdTipo).FirstOrDefault(x => x.Descricao == tipo.Descricao);
+
+                    carta.AtributoId = atributoAntigo.IdAtributo;
+                    carta.IconeId = iconeAntigo.IdIcone;
+                    carta.ImagemId = imagemAntigo.IdImagem;
+                    carta.TipoId = t.IdTipo;
+
+                    ctx.Cartas.Add(carta);
+                    ctx.SaveChanges();
+
+                    atributoAntigo.Descricao = at.Descricao;
+                    atributoAntigo.Index = at.Index;
+
+                    iconeAntigo.Descricao = ic.Descricao;
+                    iconeAntigo.Index = ic.Index;
+
+                    imagemAntigo.Nome = img.Nome;
+                    imagemAntigo.Src = img.Src;
+
+
+
+                    if (tipoAntigo.Descricao.Contains("Armadilha"))
+                    {
+
+                        CrtArmadilha armadilha = SelecionarArmadilha(tipoAntigo);
+
+                        ctx.CrtArmadilhas.Attach(armadilha);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtArmadilhas.Remove(armadilha);
+                    }
+                    else if (tipoAntigo.Descricao.Contains("Magia"))
+                    {
+                        CrtMagia magia = SelecionarMagia(tipoAntigo);
+
+                        ctx.CrtMagias.Attach(magia);
+                        ctx.Cartas.Attach(c);
+                        ctx.Tipoes.Attach(tipoAntigo);
+
+                        ctx.Cartas.Remove(c);
+                        ctx.Tipoes.Remove(tipoAntigo);
+                        ctx.CrtMagias.Remove(magia);
+                    }
+
+                    ctx.SaveChanges();
+
+                    msn = "Alteração feita com sucesso";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msn = "Algo deu Errado!";
+            }
+
+            return msn;
         }
     }
 }

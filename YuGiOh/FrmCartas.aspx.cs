@@ -41,7 +41,7 @@ namespace YuGiOh
 
         }
 
-       
+
 
         private void AtualizarListViewCartas()
         {
@@ -53,7 +53,7 @@ namespace YuGiOh
         {
             lvCartas.DataSource = lvcartas;
             lvCartas.DataBind();
-            
+
         }
 
         protected void ddlTipo_SelectedIndexChanged(object sender, EventArgs e)
@@ -168,7 +168,7 @@ namespace YuGiOh
                 DivPendulos.Visible = false;
                 DivMonstro.Visible = true;
                 DivEfeitos.Visible = true;
-                
+
                 ddlPendulos.SelectedIndex = 0;
             }
 
@@ -197,102 +197,173 @@ namespace YuGiOh
 
                 if (nome != "" && nmrNivel.Value != "0" && atributo != " " && icone != " " && tipo != " " && numero != "" && nmrPtnAtaque.Value != "0" && nmrPtnDefesa.Value != "0" && descricao != "" && nome != " " && numero != " " && descricao != " " && (tipoMonstro != " " || tipoArmadilha != " " || tipoMagia != " "))
                 {
-
-
-
                     int nivel = Convert.ToInt32(nmrNivel.Value);
                     int ptnAtaque = Convert.ToInt32(nmrPtnAtaque.Value);
                     int ptnDefesa = Convert.ToInt32(nmrPtnDefesa.Value);
 
-
-                    Carta c = new Carta();
-                    Atributo at = new Atributo();
-                    Icone i = new Icone();
-                    Tipo ti = new Tipo();
-                    CrtImagem img = new CrtImagem();
-                    CrtMonstro mo = new CrtMonstro();
-                    CrtArmadilha ar = new CrtArmadilha();
-                    CrtMagia ma = new CrtMagia();
-                    MnstEfeito ef = new MnstEfeito();
-                    EfPendulo pe = new EfPendulo();
-
-                    string mensagem = null;
-
-                    c.Nome = nome;
-                    c.Nivel = nivel;
-                    c.Numero = numero;
-                    c.PtnAtaque = ptnAtaque;
-                    c.PtnDefesa = ptnDefesa;
-                    c.Descricao = descricao;
-
-                    at.Descricao = atributo;
-                    at.Index = ddlAtributo.SelectedIndex;
-
-                    i.Descricao = icone;
-                    i.Index = ddlIcone.SelectedIndex;
-
-                    ti.Descricao = tipo;
-                    ti.Index = ddlTipo.SelectedIndex;
-
-                    mo.Descricao = tipoMonstro;
-                    mo.Index = ddlMonstros.SelectedIndex;
-
-                    ef.Descricao = mnstEfeito;
-                    ef.Index = ddlEfeitos.SelectedIndex;
-
-                    pe.Descricao = efPendulo;
-                    pe.Index = ddlPendulos.SelectedIndex;
-
-                    ar.Descricao = tipoArmadilha;
-                    ar.Index = ddlArmadilhas.SelectedIndex;
-
-                    ma.Descricao = tipoMagia;
-                    ma.Index = ddlMagias.SelectedIndex;
-
-                    if (imgSelecionada.HasFile)
+                    if (btnCadastrar.Text == "Cadastrar")
                     {
 
 
-                        var arquivo = imgSelecionada.PostedFile;
-                        string tipoImg = arquivo.ContentType;
+                        Carta c = new Carta();
+                        Atributo at = new Atributo();
+                        Icone i = new Icone();
+                        Tipo ti = new Tipo();
+                        CrtImagem img = new CrtImagem();
+                        CrtMonstro mo = new CrtMonstro();
+                        CrtArmadilha ar = new CrtArmadilha();
+                        CrtMagia ma = new CrtMagia();
+                        MnstEfeito ef = new MnstEfeito();
+                        EfPendulo pe = new EfPendulo();
 
-                        if (tipoImg.Contains("image/"))
+                        string mensagem = null;
+
+                        c.Nome = nome;
+                        c.Nivel = nivel;
+                        c.Numero = numero;
+                        c.PtnAtaque = ptnAtaque;
+                        c.PtnDefesa = ptnDefesa;
+                        c.Descricao = descricao;
+
+                        at.Descricao = atributo;
+                        at.Index = ddlAtributo.SelectedIndex;
+
+                        i.Descricao = icone;
+                        i.Index = ddlIcone.SelectedIndex;
+
+                        ti.Descricao = tipo;
+                        ti.Index = ddlTipo.SelectedIndex;
+
+                        mo.Descricao = tipoMonstro;
+                        mo.Index = ddlMonstros.SelectedIndex;
+
+                        ef.Descricao = mnstEfeito;
+                        ef.Index = ddlEfeitos.SelectedIndex;
+
+                        pe.Descricao = efPendulo;
+                        pe.Index = ddlPendulos.SelectedIndex;
+
+                        ar.Descricao = tipoArmadilha;
+                        ar.Index = ddlArmadilhas.SelectedIndex;
+
+                        ma.Descricao = tipoMagia;
+                        ma.Index = ddlMagias.SelectedIndex;
+
+                        if (imgSelecionada.HasFile)
                         {
 
-                            string extensao = "";
 
-                            if (tipoImg.Contains("image/jpg"))
+                            var arquivo = imgSelecionada.PostedFile;
+                            string tipoImg = arquivo.ContentType;
+
+                            if (tipoImg.Contains("image/"))
                             {
 
-                                extensao = tipoImg.Replace("image/jpg", "png");
+                                string extensao = "";
+
+                                if (tipoImg.Contains("image/jpg"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/jpg", "png");
+
+                                }
+                                else if (tipoImg.Contains("image/jpeg"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/jpeg", "png");
+
+                                }
+                                else if (tipoImg.Contains("image/gif"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/gif", "png");
+
+                                }
+                                else if (tipoImg.Contains("image/webp"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/webp", "png");
+
+                                }
+
+                                string nomeArquivo = c.Nome + "." + extensao;
+                                string caminho = MapPath("~/upload") + "\\" + nomeArquivo;
+                                arquivo.SaveAs(caminho);
+
+                                img.Nome = nomeArquivo;
+                                img.Src = "~/upload/" + nomeArquivo;
+
+
+
+                                if (mo.Descricao != " " && mo.Descricao != null)
+                                {
+
+                                    if (ef.Descricao != " " && ef.Descricao != null)
+                                    {
+
+                                        if (pe.Descricao != " " && pe.Descricao != null)
+                                        {
+                                            mensagem = CartasDAO.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe, img);
+                                            lblMensagem.InnerText = mensagem;
+
+                                            LimparFormulario();
+                                            AtualizarListViewCartas();
+
+                                        }
+                                        else
+                                        {
+                                            mensagem = CartasDAO.CadastrarMonstroEfeito(c, at, i, ti, mo, ef, img);
+                                            lblMensagem.InnerText = mensagem;
+                                            LimparFormulario();
+                                            AtualizarListViewCartas();
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        mensagem = CartasDAO.CadastrarMonstro(c, at, i, ti, mo, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+                                    }
+
+                                }
+
+                                else if (ar.Descricao != " " && ar.Descricao != null)
+                                {
+                                    mensagem = CartasDAO.CadastrarArmadilha(c, at, i, ti, ar, img);
+                                    lblMensagem.InnerText = mensagem;
+                                    LimparFormulario();
+                                    AtualizarListViewCartas();
+                                }
+
+                                else if (ma.Descricao != " " && ma.Descricao != null)
+                                {
+
+                                    mensagem = CartasDAO.CadastrarMagia(c, at, i, ti, ma, img);
+                                    lblMensagem.InnerText = mensagem;
+                                    LimparFormulario();
+                                    AtualizarListViewCartas();
+
+                                }
+
 
                             }
-                            else if (tipoImg.Contains("image/jpeg"))
+                            else
                             {
 
-                                extensao = tipoImg.Replace("image/jpeg", "png");
-
-                            }
-                            else if (tipoImg.Contains("image/gif"))
-                            {
-
-                                extensao = tipoImg.Replace("image/gif", "png");
-
-                            }
-                            else if (tipoImg.Contains("image/webp"))
-                            {
-
-                                extensao = tipoImg.Replace("image/webp", "png");
+                                lblMensagem.InnerText = "O arquivo selecionado não é uma imagem. Tente selicionar um arquivo tipo JPEG, JPG ou PNG";
 
                             }
 
-                            string nomeArquivo = c.Nome + "." + extensao;
-                            string caminho = MapPath("~/upload") + "\\" + nomeArquivo;
-                            arquivo.SaveAs(caminho);
+                        }
+                        else if (fieldImg.Visible == true)
+                        {
+
+                            string nomeArquivo = c.Nome + ".png";
 
                             img.Nome = nomeArquivo;
                             img.Src = "~/upload/" + nomeArquivo;
-
 
 
                             if (mo.Descricao != " " && mo.Descricao != null)
@@ -305,10 +376,8 @@ namespace YuGiOh
                                     {
                                         mensagem = CartasDAO.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe, img);
                                         lblMensagem.InnerText = mensagem;
-
                                         LimparFormulario();
                                         AtualizarListViewCartas();
-
                                     }
                                     else
                                     {
@@ -348,92 +417,402 @@ namespace YuGiOh
                             }
 
 
-                        }
-                        else
-                        {
-
-                            lblMensagem.InnerText = "O arquivo selecionado não é uma imagem. Tente selicionar um arquivo tipo JPEG, JPG ou PNG";
-
+                            else
+                            {
+                                lblMensagem.InnerText = "Você não selecionou uma imagem, ou o arquivo selecionado não é uma imagem";
+                            }
                         }
 
                     }
-                    else if (fieldImg.Visible == true)
+                    else if (btnCadastrar.Text == "Alterar")
                     {
+                        int id = Convert.ToInt32(hfid.Value);
 
-                        string nomeArquivo = c.Nome + ".png";
+                        Carta c = CartasDAO.SelecionarCarta(id);
 
-                        img.Nome = nomeArquivo;
-                        img.Src = "~/upload/" + nomeArquivo;
+                        Tipo ti = CartasDAO.SelecionarTipo(c);
+                        Atributo at = CartasDAO.SelecionarAtributo(c);
+                        Icone ic = CartasDAO.SelecionarIcone(c);
+                        CrtImagem img = CartasDAO.SelecionarImagem(c);
 
+                        CrtMonstro mo = CartasDAO.SelecionarMonstro(ti);
+                        CrtArmadilha ar = CartasDAO.SelecionarArmadilha(ti);
+                        CrtMagia ma = CartasDAO.SelecionarMagia(ti);
 
-                        if (mo.Descricao != " " && mo.Descricao != null)
+                        MnstEfeito ef = CartasDAO.SelecionarMonstroEfeito(mo);
+
+                        EfPendulo pe = CartasDAO.SelecionarMonstroPendulo(ef);
+
+                        string mensagem = null;
+
+                        c.Nome = nome;
+                        c.Nivel = nivel;
+                        c.Numero = numero;
+                        c.PtnAtaque = ptnAtaque;
+                        c.PtnDefesa = ptnDefesa;
+                        c.Descricao = descricao;
+
+                        at.Descricao = atributo;
+                        at.Index = ddlAtributo.SelectedIndex;
+
+                        ic.Descricao = icone;
+                        ic.Index = ddlIcone.SelectedIndex;
+
+                        if (imgSelecionada.HasFile)
                         {
 
-                            if (ef.Descricao != " " && ef.Descricao != null)
+
+                            var arquivo = imgSelecionada.PostedFile;
+                            string tipoImg = arquivo.ContentType;
+
+                            if (tipoImg.Contains("image/"))
                             {
 
-                                if (pe.Descricao != " " && pe.Descricao != null)
+                                string extensao = "";
+
+                                if (tipoImg.Contains("image/jpg"))
                                 {
-                                    mensagem = CartasDAO.CadastrarMonstroPendulo(c, at, i, ti, mo, ef, pe, img);
-                                    lblMensagem.InnerText = mensagem;
-                                    LimparFormulario();
-                                    AtualizarListViewCartas();
+
+                                    extensao = tipoImg.Replace("image/jpg", "png");
+
+                                }
+                                else if (tipoImg.Contains("image/jpeg"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/jpeg", "png");
+
+                                }
+                                else if (tipoImg.Contains("image/gif"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/gif", "png");
+
+                                }
+                                else if (tipoImg.Contains("image/webp"))
+                                {
+
+                                    extensao = tipoImg.Replace("image/webp", "png");
+
+                                }
+
+                                string nomeArquivo = c.Nome + "." + extensao;
+                                string caminho = MapPath("~/upload") + "\\" + nomeArquivo;
+                                arquivo.SaveAs(caminho);
+
+                                img.Nome = nomeArquivo;
+                                img.Src = "~/upload/" + nomeArquivo;
+
+
+                                if (ti.Descricao != tipo) //Se o usuário mudar o tipo da carta
+                                {
+                                    Carta carta = new Carta();
+                                    Tipo Tipo = new Tipo();
+
+                                    carta.Nome = nome;
+                                    carta.Nivel = nivel;
+                                    carta.Numero = numero;
+                                    carta.PtnAtaque = ptnAtaque;
+                                    carta.PtnDefesa = ptnDefesa;
+                                    carta.Descricao = descricao;
+
+                                    Tipo.Descricao = tipo;
+                                    Tipo.Index = ddlTipo.SelectedIndex;
+
+                                    if (Tipo.Descricao.Contains("Monstro") && tipoMonstro != null && tipoMonstro != " ")
+                                    {
+                                        CrtMonstro monstro = new CrtMonstro();
+
+                                        monstro.Descricao = tipoMonstro;
+                                        monstro.Index = ddlMonstros.SelectedIndex;
+
+
+                                        if (mnstEfeito != null && mnstEfeito != " ")
+                                        {
+                                            MnstEfeito efeito = new MnstEfeito();
+
+                                            efeito.Descricao = mnstEfeito;
+                                            efeito.Index = ddlEfeitos.SelectedIndex;
+
+                                            if (efPendulo != null && efPendulo != " ")
+                                            {
+                                                EfPendulo pendulo = new EfPendulo();
+
+                                                pendulo.Descricao = efPendulo;
+                                                pendulo.Index = ddlPendulos.SelectedIndex;
+
+                                                mensagem = CartasDAO.AlterarMonstroPenduloNovo(c, carta, at, ic, Tipo, monstro, efeito, pendulo, img);
+                                                lblMensagem.InnerText = mensagem;
+                                                LimparFormulario();
+                                                AtualizarListViewCartas();
+                                                VoltaAoCadastro();
+                                            }
+                                            else
+                                            {
+                                                mensagem = CartasDAO.AlterarMonstroEfeitoNovo(c, carta, at, ic, Tipo, monstro, efeito, img);
+                                                lblMensagem.InnerText = mensagem;
+                                                LimparFormulario();
+                                                AtualizarListViewCartas();
+                                                VoltaAoCadastro();
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            mensagem = CartasDAO.AlterarMonstroNovo(c, carta, at, ic, Tipo, monstro, img);
+                                            lblMensagem.InnerText = mensagem;
+                                            LimparFormulario();
+                                            AtualizarListViewCartas();
+                                            VoltaAoCadastro();
+
+                                        }
+
+                                    }
+                                    else if (Tipo.Descricao.Contains("Armadilha"))
+                                    {
+                                        CrtArmadilha armadilha = new CrtArmadilha();
+
+                                        armadilha.Descricao = tipoArmadilha;
+                                        armadilha.Index = ddlArmadilhas.SelectedIndex;
+
+                                        mensagem = CartasDAO.AlterarArmadilhaNovo(c, carta, at, ic, Tipo, armadilha, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+                                        VoltaAoCadastro();
+                                    }
+                                    else if (Tipo.Descricao.Contains("Magia"))
+                                    {
+                                        CrtMagia magia = new CrtMagia();
+
+                                        magia.Descricao = tipoMagia;
+                                        magia.Index = ddlMagias.SelectedIndex;
+
+                                        mensagem = CartasDAO.AlterarMagiaNovo(c, carta, at, ic, Tipo, magia, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+                                        VoltaAoCadastro();
+                                    }
+
+
+
                                 }
                                 else
                                 {
-                                    mensagem = CartasDAO.CadastrarMonstroEfeito(c, at, i, ti, mo, ef, img);
+                                    ti.Descricao = tipo;
+                                    ti.Index = ddlTipo.SelectedIndex;
+
+
+                                    if (ti.MonstroId != null) //Monstro antigo
+                                    {
+                                        mo.Descricao = tipoMonstro;
+                                        mo.Index = ddlMonstros.SelectedIndex;
+
+                                        if (mo.EfeitoId != null)
+                                        {
+                                            ef.Descricao = mnstEfeito;
+                                            ef.Index = ddlEfeitos.SelectedIndex;
+
+                                            if (ef.PenduloId != null)
+                                            {
+                                                pe.Descricao = efPendulo;
+                                                pe.Index = ddlPendulos.SelectedIndex;
+
+                                                mensagem = CartasDAO.CadastrarMonstroPendulo(c, at, ic, ti, mo, ef, pe, img);
+                                                lblMensagem.InnerText = mensagem;
+                                                LimparFormulario();
+                                                AtualizarListViewCartas();
+                                            }
+                                            else
+                                            {
+                                                mensagem = CartasDAO.CadastrarMonstroEfeito(c, at, ic, ti, mo, ef, img);
+                                                lblMensagem.InnerText = mensagem;
+                                                LimparFormulario();
+                                                AtualizarListViewCartas();
+                                            }
+
+                                        }
+                                        else //Monstro Antigo: Normal
+                                        {
+                                            
+
+                                            if(DivEfeitos.Visible == true)
+                                            {
+                                                MnstEfeito efeito = new MnstEfeito();
+
+                                                efeito.Descricao = mnstEfeito;
+                                                efeito.Index = ddlEfeitos.SelectedIndex;
+
+                                                if (DivPendulos.Visible == true)
+                                                {
+                                                    EfPendulo pendulo = new EfPendulo();
+
+                                                    pendulo.Descricao = efPendulo;
+                                                    pendulo.Index = ddlPendulos.SelectedIndex;
+                                                    
+                                                    mensagem = CartasDAO.AlterarMonstroPendulo(c, at, ic, ti, mo, efeito, pendulo, img);
+                                                    lblMensagem.InnerText = mensagem;
+                                                    LimparFormulario();
+                                                    AtualizarListViewCartas();
+                                                    VoltaAoCadastro();
+                                                }
+                                                else
+                                                {
+
+                                                    mensagem = CartasDAO.AlterarMonstroEfeito(c, at, ic, ti, mo, efeito, img);
+                                                    lblMensagem.InnerText = mensagem;
+                                                    LimparFormulario();
+                                                    AtualizarListViewCartas();
+                                                    VoltaAoCadastro();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                mensagem = CartasDAO.AlterarMonstro(c, at, ic, ti, mo, img);
+                                                lblMensagem.InnerText = mensagem;
+                                                LimparFormulario();
+                                                AtualizarListViewCartas();
+                                                VoltaAoCadastro();
+                                            }
+                                        }
+
+                                    }
+
+                                    else if (ar.Descricao != " " && ar.Descricao != null)
+                                    {
+                                        ar.Descricao = tipoArmadilha;
+                                        ar.Index = ddlArmadilhas.SelectedIndex;
+
+                                        mensagem = CartasDAO.CadastrarArmadilha(c, at, ic, ti, ar, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+                                    }
+
+                                    else if (ma.Descricao != " " && ma.Descricao != null)
+                                    {
+                                        ma.Descricao = tipoMagia;
+                                        ma.Index = ddlMagias.SelectedIndex;
+
+                                        mensagem = CartasDAO.CadastrarMagia(c, at, ic, ti, ma, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+
+                                    }
+                                }
+
+
+                            }
+                            else
+                            {
+
+                                lblMensagem.InnerText = "O arquivo selecionado não é uma imagem. Tente selicionar um arquivo tipo JPEG, JPG ou PNG";
+
+                            }
+
+                        }
+                        else if (fieldImg.Visible == true)
+                        {
+
+                            string nomeArquivo = c.Nome + ".png";
+
+                            img.Nome = nomeArquivo;
+                            img.Src = "~/upload/" + nomeArquivo;
+
+
+                            if (mo.Descricao != " " && mo.Descricao != null)
+                            {
+
+                                if (ef.Descricao != " " && ef.Descricao != null)
+                                {
+
+                                    if (pe.Descricao != " " && pe.Descricao != null)
+                                    {
+                                        mensagem = CartasDAO.CadastrarMonstroPendulo(c, at, ic, ti, mo, ef, pe, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+                                    }
+                                    else
+                                    {
+                                        mensagem = CartasDAO.CadastrarMonstroEfeito(c, at, ic, ti, mo, ef, img);
+                                        lblMensagem.InnerText = mensagem;
+                                        LimparFormulario();
+                                        AtualizarListViewCartas();
+                                    }
+
+                                }
+                                else
+                                {
+                                    mensagem = CartasDAO.CadastrarMonstro(c, at, ic, ti, mo, img);
                                     lblMensagem.InnerText = mensagem;
                                     LimparFormulario();
                                     AtualizarListViewCartas();
                                 }
 
                             }
-                            else
+
+                            else if (ar.Descricao != " " && ar.Descricao != null)
                             {
-                                mensagem = CartasDAO.CadastrarMonstro(c, at, i, ti, mo, img);
+                                mensagem = CartasDAO.CadastrarArmadilha(c, at, ic, ti, ar, img);
                                 lblMensagem.InnerText = mensagem;
                                 LimparFormulario();
                                 AtualizarListViewCartas();
                             }
 
-                        }
+                            else if (ma.Descricao != " " && ma.Descricao != null)
+                            {
 
-                        else if (ar.Descricao != " " && ar.Descricao != null)
-                        {
-                            mensagem = CartasDAO.CadastrarArmadilha(c, at, i, ti, ar, img);
-                            lblMensagem.InnerText = mensagem;
-                            LimparFormulario();
-                            AtualizarListViewCartas();
-                        }
+                                mensagem = CartasDAO.CadastrarMagia(c, at, ic, ti, ma, img);
+                                lblMensagem.InnerText = mensagem;
+                                LimparFormulario();
+                                AtualizarListViewCartas();
 
-                        else if (ma.Descricao != " " && ma.Descricao != null)
-                        {
+                            }
 
-                            mensagem = CartasDAO.CadastrarMagia(c, at, i, ti, ma, img);
-                            lblMensagem.InnerText = mensagem;
-                            LimparFormulario();
-                            AtualizarListViewCartas();
 
+                            else
+                            {
+                                lblMensagem.InnerText = "Você não selecionou uma imagem, ou o arquivo selecionado não é uma imagem";
+                            }
                         }
 
 
-                        else
-                        {
-                            lblMensagem.InnerText = "Você não selecionou uma imagem, ou o arquivo selecionado não é uma imagem";
-                        }
+
+
+
+
+
+
+
+
+
+
+
+
 
                     }
 
-                    else
-                    {
-                        lblMensagem.InnerText = "Você deixou campos em branco, preencha todos os campos!";
-                    }
+
+                }
+
+                else
+                {
+                    lblMensagem.InnerText = "Você deixou campos em branco, preencha todos os campos!";
                 }
             }
             catch (Exception ex)
             {
                 lblMensagem.InnerText = "Algo deu errado. Possivelmente você inseriu um arquivo muito grande ou um arquivo que não é imagem";
             }
+        }
+
+        private void VoltaAoCadastro()
+        {
+            btnCadastrar.Text = "Cadastrar";
+            lgFieldset.InnerText = "CADASTRAR";
+            h1.InnerText = "Cadastrar Carta";
         }
 
         private void LimparFormulario()
@@ -476,23 +855,27 @@ namespace YuGiOh
                     if (tipoImg.Contains("image/"))
                     {
                         string extensao = "";
-                        
-                        if (tipoImg.Contains("image/jpg")){
+
+                        if (tipoImg.Contains("image/jpg"))
+                        {
 
                             extensao = tipoImg.Replace("image/jpg", "png");
 
                         }
-                        else if (tipoImg.Contains("image/jpeg")){
+                        else if (tipoImg.Contains("image/jpeg"))
+                        {
 
                             extensao = tipoImg.Replace("image/jpeg", "png");
 
                         }
-                        else if (tipoImg.Contains("image/gif")){
+                        else if (tipoImg.Contains("image/gif"))
+                        {
 
                             extensao = tipoImg.Replace("image/gif", "png");
 
                         }
-                        else if (tipoImg.Contains("image/webp")){
+                        else if (tipoImg.Contains("image/webp"))
+                        {
 
                             extensao = tipoImg.Replace("image/webp", "png");
 
@@ -512,7 +895,7 @@ namespace YuGiOh
                         }
                         else
                         {
-                            lblMensagem.InnerText = "Preencha o campo \"Nome\" antes de selecionar uma imagem";
+                            lblMensagem.InnerText = "Insira o nome da carta antes de visualizar a imagem";
                         }
                     }
                     else
@@ -563,7 +946,7 @@ namespace YuGiOh
             }*/
         }
 
-        
+
         protected void ibDelete_Command(object sender, CommandEventArgs e)
         {
             int id = Convert.ToInt32(e.CommandArgument);
@@ -582,13 +965,14 @@ namespace YuGiOh
 
         protected void ibAlterar_Command(object sender, CommandEventArgs e)
         {
-            
-            
+
+
             int id = Convert.ToInt32(e.CommandArgument);
             Carta c = CartasDAO.SelecionarCarta(id);
             Atributo at = CartasDAO.SelecionarAtributo(c);
             Icone i = CartasDAO.SelecionarIcone(c);
             Tipo ti = CartasDAO.SelecionarTipo(c);
+
 
             if (ti.Descricao.Contains("Monstro"))
             {
@@ -599,17 +983,17 @@ namespace YuGiOh
                 DivEfeitos.Visible = false;
                 DivPendulos.Visible = false;
 
-                
+
 
                 ddlMonstros.SelectedIndex = Convert.ToInt32(mo.Index);
-                
-                if(mo.EfeitoId != null)
+
+                if (mo.EfeitoId != null)
                 {
                     MnstEfeito ef = CartasDAO.SelecionarMonstroEfeito(mo);
                     DivEfeitos.Visible = true;
                     ddlEfeitos.SelectedIndex = Convert.ToInt32(ef.Index);
 
-                    if(ef.PenduloId != null)
+                    if (ef.PenduloId != null)
                     {
                         EfPendulo pe = CartasDAO.SelecionarMonstroPendulo(ef);
                         DivPendulos.Visible = true;
@@ -617,7 +1001,7 @@ namespace YuGiOh
 
                     }
                 }
-                
+
             }
             else if (ti.Descricao.Contains("Armadilha"))
             {
@@ -656,8 +1040,9 @@ namespace YuGiOh
 
             btnCadastrar.Text = "Alterar";
             lgFieldset.InnerText = "ALTERAR";
+            h1.InnerText = "Alterar Carta";
             hfid.Value = c.IdCarta.ToString();
-            lblMensagem.InnerText = "Vá para cima para alterar a carta desejada";
+            lblMensagem.InnerText = "Altere os dados da carta \"" + c.Nome + "\". Lembre-se de inserir a imagem novamente";
         }
     }
 }

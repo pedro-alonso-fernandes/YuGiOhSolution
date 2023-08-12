@@ -33,6 +33,15 @@ namespace YuGiOh
         protected global::System.Web.UI.WebControls.LoginStatus LoginStatus2;
 
         /// <summary>
+        /// Controle h1.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl h1;
+
+        /// <summary>
         /// Controle lblMensagem.
         /// </summary>
         /// <remarks>

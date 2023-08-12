@@ -21,7 +21,7 @@
 
                 <ul class="nav-list">
                    
-                    <li><a href="FrmCartas.aspx">Cadastrar Cartas</a></li>
+                    <li><a href="#">Cadastrar Cartas</a></li>
                     <li><a href="Default.aspx">Inicio</a></li>
                     <li>
                         <asp:LoginName FormatString="{0} - " runat="server" />
@@ -42,7 +42,7 @@
             </nav>
         </fieldset>
         <div>
-            <h1>Cadastrar Carta</h1>
+            <h1 id="h1" runat="server">Cadastrar Carta</h1>
             <label id="lblMensagem" runat="server"></label>
             <fieldset>
                 <legend id="lgFieldset" runat="server">CADASTRO</legend>
@@ -184,6 +184,8 @@
                 <br />
                 <br />
 
+                <label>Imagem:</label>
+                <br />
                 <asp:FileUpload ID="imgSelecionada" runat="server" />
                 <br />
                 <br />
